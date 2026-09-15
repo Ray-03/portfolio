@@ -10,6 +10,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { siteConfig } from "@/lib/site";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -41,7 +42,7 @@ export async function generateMetadata({
   if (!hasLocale(lang)) return {};
   const dict = getDictionary(lang);
   return {
-    title: dict.meta.title,
+    title: `${siteConfig.name} · ${siteConfig.title}`,
     description: dict.meta.description,
   };
 }
@@ -65,7 +66,7 @@ export default async function LangLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansSc.variable} h-full antialiased`}
     >
-      <body className="min-h-full font-sans">
+      <body className="min-h-full font-sans" suppressHydrationWarning>
         <ThemeProvider>
           <I18nProvider locale={locale} dict={dict}>
             {children}
