@@ -5,6 +5,14 @@ export const id: Dictionary = {
     title: "Portofolio",
     description: "Fondasi tema untuk portofolio.",
   },
+  apps: {
+    about: "Tentang Saya",
+    portfolio: "Portofolio",
+    linkedin: "LinkedIn",
+    github: "GitHub",
+    email: "Email",
+    contact: "Kontak",
+  },
   theme: {
     eyebrow: "Fondasi tema",
     title: "Primary · Secondary · Terang / Gelap",

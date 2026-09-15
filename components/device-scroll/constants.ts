@@ -3,29 +3,36 @@ export const DEVICE_SCROLL = {
   maxWidth: 52 * 16,
   /** Landscape tablet ratio (height / width) */
   aspect: 10 / 16,
+  /** Portrait tablet ratio on narrow viewports (height / width) */
+  aspectPortrait: 16 / 10,
+  /** Below this width the intro device is portrait */
+  portraitBelow: 768,
   /** Bezel inset around the screen */
   bezelPadding: 16,
   bezelRadius: 28,
   screenRadius: 14,
-  /** Sticky scroll track height */
-  trackHeightClass: "h-[320vh]",
+  /**
+   * Scroll track length. Keep modest so enter finishes without a long empty stretch.
+   */
+  trackHeightClass: "h-[240vh]",
   perspective: 1200,
-  contentTravel: -480,
+  /** No post-enter content pan */
+  contentTravel: 0,
   spring: {
-    stiffness: 120,
-    damping: 28,
-    mass: 0.28,
-    restDelta: 0.0001,
+    stiffness: 100,
+    damping: 30,
+    mass: 0.25,
+    restDelta: 0.001,
   },
   /**
    * Scroll progress keyframes (0–1).
-   * Tilt finishes early for a more sensitive recline → upright.
+   * Enter completes earlier than before for a tighter feel.
    */
   timeline: {
-    tiltMid: 0.06,
-    upright: 0.14,
-    enterStart: 0.14,
-    entered: 0.55,
+    tiltMid: 0.08,
+    upright: 0.18,
+    enterStart: 0.18,
+    entered: 0.72,
     radiusFlattenStart: 0.45,
   },
   tilt: {
@@ -46,16 +53,26 @@ export function measureDeviceMetrics(
   viewWidth = window.innerWidth,
   viewHeight = window.innerHeight,
 ): DeviceMetrics {
-  const tabletWidth = Math.min(
-    viewWidth * 0.88,
-    DEVICE_SCROLL.maxWidth,
+  const portrait = viewWidth < DEVICE_SCROLL.portraitBelow;
+  const aspect = portrait
+    ? DEVICE_SCROLL.aspectPortrait
+    : DEVICE_SCROLL.aspect;
+
+  let tabletWidth = Math.min(
+    viewWidth * (portrait ? 0.72 : 0.88),
+    portrait ? 360 : DEVICE_SCROLL.maxWidth,
   );
-  const tabletHeight = tabletWidth * DEVICE_SCROLL.aspect;
+  let tabletHeight = tabletWidth * aspect;
+
+  const maxHeight = viewHeight * (portrait ? 0.7 : 0.85);
+  if (tabletHeight > maxHeight) {
+    tabletHeight = maxHeight;
+    tabletWidth = tabletHeight / aspect;
+  }
 
   return {
     tabletWidth,
     tabletHeight,
-    // Outer frame = viewport + bezel; screen inset equals viewport exactly
     fullWidth: viewWidth + DEVICE_SCROLL.bezelPadding * 2,
     fullHeight: viewHeight + DEVICE_SCROLL.bezelPadding * 2,
   };

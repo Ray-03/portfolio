@@ -5,6 +5,14 @@ export const zh: Dictionary = {
     title: "作品集",
     description: "作品集的主题基础。",
   },
+  apps: {
+    about: "关于我",
+    portfolio: "作品集",
+    linkedin: "LinkedIn",
+    github: "GitHub",
+    email: "邮件",
+    contact: "联系方式",
+  },
   theme: {
     eyebrow: "主题基础",
     title: "主色 · 次色 · 浅色 / 深色",

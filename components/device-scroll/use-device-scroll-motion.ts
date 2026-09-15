@@ -17,6 +17,7 @@ export type DeviceScrollMotion = {
   titleOpacity: MotionValue<number>;
   titleY: MotionValue<number>;
   titleVisibility: MotionValue<"hidden" | "visible">;
+  homeHeaderOpacity: MotionValue<number>;
   rotate: MotionValue<number>;
   scale: MotionValue<number>;
   y: MotionValue<number>;
@@ -52,6 +53,12 @@ export function useDeviceScrollMotion(
     value <= 0.01 ? "hidden" : "visible",
   );
 
+  const homeHeaderOpacity = useTransform(
+    progress,
+    [enterStart, enterStart + 0.2, entered],
+    [0, 0.7, 1],
+  );
+
   const rotate = useTransform(progress, [0, tiltMid, upright], [
     ...DEVICE_SCROLL.tilt.rotate,
   ] as number[]);
@@ -62,6 +69,7 @@ export function useDeviceScrollMotion(
     ...DEVICE_SCROLL.tilt.y,
   ] as number[]);
 
+  // Original approach: grow layout from tablet → fullscreen (sharp at end)
   const width = useTransform(
     progress,
     [0, enterStart, entered, 1],
@@ -119,6 +127,7 @@ export function useDeviceScrollMotion(
     titleOpacity,
     titleY,
     titleVisibility,
+    homeHeaderOpacity,
     rotate,
     scale,
     y,

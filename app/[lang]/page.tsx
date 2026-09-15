@@ -1,18 +1,14 @@
-import { HeroScroll } from "@/components/hero-scroll";
+import { HomeHero } from "@/components/home-hero";
 import { SiteToolbar } from "@/components/site-toolbar";
-import { ThemeFoundation } from "@/components/theme-foundation";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
+import { TabletHome } from "@/components/tablet-home";
 
-export default async function Home({ params }: PageProps<"/[lang]">) {
-  const { lang } = await params;
-  const dict = getDictionary(lang);
-
+export default function Home() {
   return (
     <main className="w-full">
       <SiteToolbar />
-      <HeroScroll>
-        <ThemeFoundation dict={dict} />
-      </HeroScroll>
+      <HomeHero>
+        <TabletHome />
+      </HomeHero>
     </main>
   );
 }

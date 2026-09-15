@@ -5,6 +5,14 @@ export const de: Dictionary = {
     title: "Portfolio",
     description: "Theme-Grundlage für das Portfolio.",
   },
+  apps: {
+    about: "Über mich",
+    portfolio: "Portfolio",
+    linkedin: "LinkedIn",
+    github: "GitHub",
+    email: "E-Mail",
+    contact: "Kontakt",
+  },
   theme: {
     eyebrow: "Theme-Grundlage",
     title: "Primary · Secondary · Hell / Dunkel",

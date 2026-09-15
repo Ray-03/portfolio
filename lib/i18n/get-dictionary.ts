@@ -4,7 +4,7 @@ import { en, type Dictionary } from "@/lib/i18n/dictionaries/en";
 import { id } from "@/lib/i18n/dictionaries/id";
 import { zh } from "@/lib/i18n/dictionaries/zh";
 
-const dictionaries: Record<Locale, Dictionary> = { en, id, zh, de };
+export const dictionaries: Record<Locale, Dictionary> = { en, id, zh, de };
 
 export function getDictionary(locale: string): Dictionary {
   return hasLocale(locale) ? dictionaries[locale] : dictionaries[defaultLocale];

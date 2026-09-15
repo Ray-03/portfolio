@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { localeCookie, localeLabels, locales, type Locale } from "@/lib/i18n/config";
+import { localeLabels, locales, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/components/i18n/i18n-provider";
 import { cn } from "@/lib/utils";
 
@@ -16,21 +15,19 @@ function replaceLocale(pathname: string, nextLocale: Locale) {
 }
 
 export function LocaleSwitcher() {
-  const { locale, dict } = useI18n();
+  const { locale, dict, setLocale } = useI18n();
   const pathname = usePathname() || `/${locale}`;
 
   return (
     <nav aria-label={dict.a11y.language} className="flex items-center gap-1">
       {locales.map((item) => {
-        const href = replaceLocale(pathname, item);
         const active = item === locale;
 
         return (
-          <Link
+          <button
             key={item}
-            href={href}
-            hrefLang={item}
-            aria-current={active ? "page" : undefined}
+            type="button"
+            aria-current={active ? "true" : undefined}
             className={cn(
               "rounded-md px-2 py-1 text-xs font-medium transition-colors",
               active
@@ -38,11 +35,22 @@ export function LocaleSwitcher() {
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
             onClick={() => {
-              document.cookie = `${localeCookie}=${item}; path=/; max-age=31536000; samesite=lax`;
+              if (item === locale) return;
+              setLocale(item);
+              // Update the URL without a Next.js navigation (avoids remount / scroll reset)
+              const href = replaceLocale(
+                window.location.pathname || pathname,
+                item,
+              );
+              window.history.replaceState(
+                window.history.state,
+                "",
+                href + window.location.search + window.location.hash,
+              );
             }}
           >
             {localeLabels[item]}
-          </Link>
+          </button>
         );
       })}
     </nav>

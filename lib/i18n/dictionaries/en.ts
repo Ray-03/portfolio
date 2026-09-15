@@ -3,6 +3,14 @@ export const en = {
     title: "Portfolio",
     description: "Theme foundation for the portfolio.",
   },
+  apps: {
+    about: "About Me",
+    portfolio: "Portfolio",
+    linkedin: "LinkedIn",
+    github: "GitHub",
+    email: "Email",
+    contact: "Contact",
+  },
   theme: {
     eyebrow: "Theme foundation",
     title: "Primary · Secondary · Light / Dark",

@@ -102,6 +102,14 @@
   --sidebar-accent-foreground: oklch(0.3 0.05 195);
   --sidebar-border: oklch(0.88 0.015 250);
   --sidebar-ring: oklch(0.55 0.12 195);
+
+  /* Tablet home wallpaper (light) */
+  --tablet-glow-1: oklch(0.88 0.06 195);
+  --tablet-glow-2: oklch(0.9 0.08 75);
+  --tablet-glow-3: oklch(0.94 0.03 250);
+  --tablet-base: oklch(0.97 0.01 250);
+  --tablet-veil: oklch(0.99 0.005 250 / 35%);
+  --tablet-veil-bottom: oklch(0.92 0.02 250 / 55%);
 }
 
 .dark {
@@ -148,6 +156,14 @@
   --sidebar-accent-foreground: oklch(0.9 0.03 195);
   --sidebar-border: oklch(0.96 0.01 250 / 12%);
   --sidebar-ring: oklch(0.78 0.11 195);
+
+  /* Tablet home wallpaper (dark) */
+  --tablet-glow-1: oklch(0.35 0.07 195);
+  --tablet-glow-2: oklch(0.38 0.08 75);
+  --tablet-glow-3: oklch(0.28 0.04 250);
+  --tablet-base: oklch(0.14 0.02 250);
+  --tablet-veil: oklch(0.1 0.02 250 / 25%);
+  --tablet-veil-bottom: oklch(0.08 0.02 250 / 55%);
 }
 
 @layer base {
@@ -166,5 +182,36 @@
 
   body {
     @apply min-h-full bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  .tablet-wallpaper {
+    background-color: var(--tablet-base);
+    background-image:
+      radial-gradient(
+        120% 80% at 18% 12%,
+        var(--tablet-glow-1) 0%,
+        transparent 48%
+      ),
+      radial-gradient(
+        100% 70% at 88% 18%,
+        var(--tablet-glow-2) 0%,
+        transparent 42%
+      ),
+      radial-gradient(
+        90% 85% at 50% 100%,
+        var(--tablet-glow-3) 0%,
+        var(--tablet-base) 58%
+      );
+  }
+
+  .tablet-wallpaper-veil {
+    background: linear-gradient(
+      to bottom,
+      var(--tablet-veil) 0%,
+      transparent 40%,
+      var(--tablet-veil-bottom) 100%
+    );
   }
 }
