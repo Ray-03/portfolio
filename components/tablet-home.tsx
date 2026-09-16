@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { FolderGit2 } from "lucide-react";
+import { PortfolioPage } from "@/components/portfolio-page";
 import { useDeviceScroll } from "@/components/device-scroll/device-scroll-context";
 import { useI18n } from "@/components/i18n/i18n-provider";
 import { MacOSDock } from "@/components/ui/mac-os-dock";
@@ -11,7 +13,6 @@ import {
   getTabletDockApps,
   openEmailComposer,
   tabletAppActions,
-  tabletHomeTiles,
   type TabletAppId,
 } from "@/lib/tablet-apps";
 
@@ -21,73 +22,128 @@ function isTabletAppId(id: string): id is TabletAppId {
 
 export function TabletHome() {
   const { dict } = useI18n();
-  const { homeHeaderOpacity } = useDeviceScroll();
+  const { ensureEntered } = useDeviceScroll();
   const [openApps, setOpenApps] = useState<string[]>([]);
+  const [portfolioOpen, setPortfolioOpen] = useState(false);
+  const enteringRef = useRef(false);
   const dockApps = useMemo(() => getTabletDockApps(dict), [dict]);
 
-  const handleAppClick = useCallback((appId: string) => {
-    if (!isTabletAppId(appId)) return;
-    const action = tabletAppActions[appId];
-
-    setOpenApps((prev) =>
-      prev.includes(appId) ? prev : [...prev, appId],
-    );
-
-    if (action.type === "email") {
-      openEmailComposer(action.href);
-      return;
-    }
-
-    if (action.type === "external") {
-      window.open(action.href, "_blank", "noopener,noreferrer");
-      return;
-    }
-
-    const target = document.querySelector(action.href);
-    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const goHome = useCallback(() => {
+    setPortfolioOpen(false);
+    setOpenApps((prev) => prev.filter((id) => id !== "portfolio"));
   }, []);
+
+  const openPortfolio = useCallback(async () => {
+    if (enteringRef.current) return;
+    enteringRef.current = true;
+    try {
+      setOpenApps((prev) =>
+        prev.includes("portfolio") ? prev : [...prev, "portfolio"],
+      );
+      await ensureEntered();
+      setPortfolioOpen(true);
+    } finally {
+      enteringRef.current = false;
+    }
+  }, [ensureEntered]);
+
+  const handleAppClick = useCallback(
+    async (appId: string) => {
+      if (!isTabletAppId(appId) || enteringRef.current) return;
+      const action = tabletAppActions[appId];
+
+      if (action.type === "page") {
+        await openPortfolio();
+        return;
+      }
+
+      setOpenApps((prev) =>
+        prev.includes(appId) ? prev : [...prev, appId],
+      );
+
+      enteringRef.current = true;
+      try {
+        await ensureEntered();
+
+        if (action.type === "email") {
+          openEmailComposer(action.href);
+          return;
+        }
+
+        if (action.type === "external") {
+          window.open(action.href, "_blank", "noopener,noreferrer");
+          return;
+        }
+
+        const target = document.querySelector(action.href);
+        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } finally {
+        enteringRef.current = false;
+      }
+    },
+    [ensureEntered, openPortfolio],
+  );
 
   return (
     <div className="relative flex h-full min-h-svh w-full flex-col overflow-clip">
       <div aria-hidden className="tablet-wallpaper absolute inset-0" />
       <div aria-hidden className="tablet-wallpaper-veil absolute inset-0" />
 
-      <div className="relative z-10 flex flex-1 flex-col px-5 pb-28 pt-10 sm:px-8 md:px-10 md:pb-28 md:pt-14">
-        <motion.header
-          style={{ opacity: homeHeaderOpacity }}
-          className="mb-8 text-left text-foreground md:mb-10"
-        >
-          <p className="text-sm font-medium tracking-wide text-muted-foreground">
-            {siteConfig.title}
+      <motion.div
+        animate={
+          portfolioOpen
+            ? { scale: 0.94, opacity: 0.55, x: -18 }
+            : { scale: 1, opacity: 1, x: 0 }
+        }
+        transition={{ type: "spring", stiffness: 420, damping: 38, mass: 0.8 }}
+        className="relative z-10 flex flex-1 flex-col px-8 pb-32 pt-14 sm:px-10 md:px-12 md:pb-36 md:pt-16"
+        style={{ transformOrigin: "left center" }}
+      >
+        <div className="mx-auto w-full max-w-lg md:mx-0">
+          <div className="flex items-center gap-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-[28%] bg-primary text-lg font-semibold text-primary-foreground shadow-lg md:size-16 md:text-xl">
+              {siteConfig.initials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground/80">
+                {dict.about.role}
+              </p>
+              <h2 className="truncate text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                {siteConfig.name}
+              </h2>
+            </div>
+          </div>
+
+          <p className="mt-6 text-base font-medium leading-relaxed text-foreground">
+            {dict.about.lead}
           </p>
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight md:text-4xl">
-            {siteConfig.name}
-          </h2>
-        </motion.header>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/75">
+            {dict.about.body}
+          </p>
 
-        <div className="mx-auto flex w-full max-w-xs justify-center gap-8 sm:max-w-sm sm:gap-10 md:mx-0 md:justify-start">
-          {tabletHomeTiles.map((tile) => {
-            const Icon = tile.icon;
-            return (
-              <button
-                key={tile.id}
-                type="button"
-                onClick={() => handleAppClick(tile.id)}
-                className="group flex flex-col items-center gap-2 text-foreground"
-              >
-                <span className="flex size-16 items-center justify-center rounded-[22%] bg-card text-foreground shadow-lg ring-1 ring-border/60 transition group-hover:scale-105 group-active:scale-95 md:size-14">
-                  <Icon className="size-8 md:size-7" strokeWidth={1.75} />
-                </span>
-                <span className="max-w-[5.5rem] truncate text-center text-[11px] font-medium">
-                  {dict.apps[tile.labelKey]}
-                </span>
-              </button>
-            );
-          })}
+          <button
+            type="button"
+            onClick={openPortfolio}
+            className="group mt-8 flex w-full max-w-sm items-center gap-4 rounded-2xl border border-border/70 bg-card/80 p-3 text-left shadow-sm outline-none transition hover:border-primary/40 hover:bg-card focus-visible:ring-2 focus-visible:ring-primary/70 md:max-w-xs"
+          >
+            <span className="flex size-14 shrink-0 items-center justify-center rounded-[22%] bg-background text-foreground shadow-md ring-1 ring-border/60 transition duration-200 group-hover:scale-105 group-hover:ring-primary/50 group-active:scale-95">
+              <FolderGit2 className="size-7" strokeWidth={1.75} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold text-foreground">
+                {dict.apps.portfolio}
+              </span>
+              <span className="mt-0.5 block truncate text-xs text-foreground/70">
+                {dict.portfolio.lead}
+              </span>
+            </span>
+          </button>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-5 z-20 flex justify-center px-4 md:hidden">
+      <PortfolioPage open={portfolioOpen} onBack={goHome} />
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-12 z-40 flex justify-center px-6 md:hidden">
         <nav
           aria-label={dict.apps.contact}
           className="pointer-events-auto flex flex-row items-end justify-center gap-5 rounded-[1.35rem] border border-white/15 bg-[rgba(45,45,45,0.75)] px-5 py-2.5 shadow-lg backdrop-blur-md"
@@ -120,7 +176,7 @@ export function TabletHome() {
         </nav>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-4 z-20 hidden justify-center px-4 md:bottom-6 md:flex">
+      <div className="pointer-events-none absolute inset-x-0 bottom-12 z-40 hidden justify-center px-6 md:bottom-14 md:flex">
         <div className="pointer-events-auto">
           <MacOSDock
             apps={dockApps}
