@@ -8,7 +8,7 @@ export const DEVICE_SCROLL = {
   /** Below this width the intro device is portrait */
   portraitBelow: 768,
   /** Bezel inset around the screen */
-  bezelPadding: 16,
+  bezelPadding: 10,
   bezelRadius: 28,
   screenRadius: 14,
   /**
@@ -38,7 +38,14 @@ export const DEVICE_SCROLL = {
   tilt: {
     rotate: [48, 12, 0],
     scale: [0.78, 0.92, 1],
-    y: [36, 10, 0],
+    // 4 keyframes: start → mid → upright (title clear) → entered (0)
+    y: [72, 56, 48, 0],
+  },
+  /** Gentler intro tilt on narrow/portrait viewports */
+  tiltPortrait: {
+    rotate: [28, 8, 0],
+    scale: [0.88, 0.96, 1],
+    y: [56, 44, 40, 0],
   },
 } as const;
 
@@ -47,6 +54,7 @@ export type DeviceMetrics = {
   tabletHeight: number;
   fullWidth: number;
   fullHeight: number;
+  portrait: boolean;
 };
 
 export function measureDeviceMetrics(
@@ -59,12 +67,20 @@ export function measureDeviceMetrics(
     : DEVICE_SCROLL.aspect;
 
   let tabletWidth = Math.min(
-    viewWidth * (portrait ? 0.72 : 0.88),
-    portrait ? 360 : DEVICE_SCROLL.maxWidth,
+    viewWidth * (portrait ? 0.86 : 0.88),
+    portrait ? 400 : DEVICE_SCROLL.maxWidth,
   );
   let tabletHeight = tabletWidth * aspect;
 
-  const maxHeight = viewHeight * (portrait ? 0.7 : 0.85);
+  // Leave headroom under the absolute title without changing layout mid-scroll.
+  const titleClearance = portrait ? 168 : 188;
+  const maxHeight = Math.max(
+    viewHeight * 0.45,
+    Math.min(
+      viewHeight * (portrait ? 0.68 : 0.72),
+      viewHeight - titleClearance * 2,
+    ),
+  );
   if (tabletHeight > maxHeight) {
     tabletHeight = maxHeight;
     tabletWidth = tabletHeight / aspect;
@@ -73,7 +89,9 @@ export function measureDeviceMetrics(
   return {
     tabletWidth,
     tabletHeight,
-    fullWidth: viewWidth + DEVICE_SCROLL.bezelPadding * 2,
-    fullHeight: viewHeight + DEVICE_SCROLL.bezelPadding * 2,
+    // Fit the viewport so top/bottom (and side) bezels stay visible.
+    fullWidth: viewWidth,
+    fullHeight: viewHeight,
+    portrait,
   };
 }

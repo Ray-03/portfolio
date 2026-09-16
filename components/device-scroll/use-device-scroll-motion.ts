@@ -17,7 +17,6 @@ export type DeviceScrollMotion = {
   titleOpacity: MotionValue<number>;
   titleY: MotionValue<number>;
   titleVisibility: MotionValue<"hidden" | "visible">;
-  homeHeaderOpacity: MotionValue<number>;
   rotate: MotionValue<number>;
   scale: MotionValue<number>;
   y: MotionValue<number>;
@@ -33,8 +32,7 @@ export function useDeviceScrollMotion(
   metrics: DeviceMetrics,
   containerRef: RefObject<HTMLDivElement | null>,
 ): DeviceScrollMotion {
-  const { tiltMid, upright, enterStart, entered, radiusFlattenStart } =
-    DEVICE_SCROLL.timeline;
+  const { tiltMid, upright, enterStart, entered } = DEVICE_SCROLL.timeline;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -53,20 +51,20 @@ export function useDeviceScrollMotion(
     value <= 0.01 ? "hidden" : "visible",
   );
 
-  const homeHeaderOpacity = useTransform(
-    progress,
-    [enterStart, enterStart + 0.2, entered],
-    [0, 0.7, 1],
-  );
+  const tilt = metrics.portrait
+    ? DEVICE_SCROLL.tiltPortrait
+    : DEVICE_SCROLL.tilt;
 
   const rotate = useTransform(progress, [0, tiltMid, upright], [
-    ...DEVICE_SCROLL.tilt.rotate,
+    ...tilt.rotate,
   ] as number[]);
   const scale = useTransform(progress, [0, tiltMid, upright], [
-    ...DEVICE_SCROLL.tilt.scale,
+    ...tilt.scale,
   ] as number[]);
-  const y = useTransform(progress, [0, tiltMid, upright], [
-    ...DEVICE_SCROLL.tilt.y,
+  // Keep tablet clear of the title via transform only (no layout spacer → no jump).
+  // y settles to 0 as the device enters fullscreen.
+  const y = useTransform(progress, [0, tiltMid, upright, entered], [
+    ...tilt.y,
   ] as number[]);
 
   // Original approach: grow layout from tablet → fullscreen (sharp at end)
@@ -94,27 +92,18 @@ export function useDeviceScrollMotion(
   const shadowOpacity = useTransform(
     progress,
     [entered - 0.2, entered],
-    [1, 0],
+    [1, 0.35],
   );
+  // Keep device chrome — do not melt bezel/screen radius away.
   const frameRadius = useTransform(
     progress,
-    [0, upright, radiusFlattenStart, entered],
-    [
-      DEVICE_SCROLL.bezelRadius,
-      DEVICE_SCROLL.bezelRadius,
-      DEVICE_SCROLL.bezelRadius,
-      0,
-    ],
+    [0, 1],
+    [DEVICE_SCROLL.bezelRadius, DEVICE_SCROLL.bezelRadius],
   );
   const screenRadius = useTransform(
     progress,
-    [0, upright, radiusFlattenStart, entered],
-    [
-      DEVICE_SCROLL.screenRadius,
-      DEVICE_SCROLL.screenRadius,
-      DEVICE_SCROLL.screenRadius,
-      0,
-    ],
+    [0, 1],
+    [DEVICE_SCROLL.screenRadius, DEVICE_SCROLL.screenRadius],
   );
   const contentY = useTransform(
     progress,
@@ -127,7 +116,6 @@ export function useDeviceScrollMotion(
     titleOpacity,
     titleY,
     titleVisibility,
-    homeHeaderOpacity,
     rotate,
     scale,
     y,

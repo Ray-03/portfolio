@@ -51,7 +51,7 @@ export function DeviceFrame({
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[inherit] border-4 border-[#6C6C6C] bg-[#222222]"
+          className="pointer-events-none absolute inset-0 rounded-[inherit] border-2 border-[#6C6C6C] bg-[#222222]"
         />
         <motion.div
           aria-hidden

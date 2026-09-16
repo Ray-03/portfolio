@@ -5,7 +5,8 @@ import type { MotionValue } from "framer-motion";
 
 export type DeviceScrollContextValue = {
   progress: MotionValue<number>;
-  homeHeaderOpacity: MotionValue<number>;
+  /** Smooth-scrolls the intro track until the device is in fullscreen form. */
+  ensureEntered: () => Promise<void>;
 };
 
 const DeviceScrollContext = createContext<DeviceScrollContextValue | null>(

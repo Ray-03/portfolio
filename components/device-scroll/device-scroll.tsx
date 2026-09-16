@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, type ReactNode } from "react";
+import { useCallback, useMemo, useRef, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { DEVICE_SCROLL } from "@/components/device-scroll/constants";
 import { DeviceFrame } from "@/components/device-scroll/device-frame";
@@ -30,7 +30,6 @@ export function DeviceScroll({
     titleOpacity,
     titleY,
     titleVisibility,
-    homeHeaderOpacity,
     rotate,
     scale,
     y,
@@ -42,9 +41,46 @@ export function DeviceScroll({
     contentY,
   } = useDeviceScrollMotion(metrics, containerRef);
 
+  const ensureEntered = useCallback(() => {
+    const entered = DEVICE_SCROLL.timeline.entered;
+    const targetProgress = Math.min(1, entered + 0.06);
+
+    return new Promise<void>((resolve) => {
+      const el = containerRef.current;
+      if (!el) {
+        resolve();
+        return;
+      }
+
+      if (progress.get() >= entered - 0.02) {
+        resolve();
+        return;
+      }
+
+      const maxScroll = Math.max(0, el.offsetHeight - window.innerHeight);
+      const targetTop = el.offsetTop + targetProgress * maxScroll;
+
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        unsubscribe();
+        window.clearTimeout(timeoutId);
+        resolve();
+      };
+
+      const unsubscribe = progress.on("change", (value) => {
+        if (value >= entered - 0.02) finish();
+      });
+
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+      const timeoutId = window.setTimeout(finish, 2000);
+    });
+  }, [progress]);
+
   const contextValue = useMemo(
-    () => ({ progress, homeHeaderOpacity }),
-    [progress, homeHeaderOpacity],
+    () => ({ progress, ensureEntered }),
+    [progress, ensureEntered],
   );
 
   return (
@@ -60,7 +96,7 @@ export function DeviceScroll({
               y: titleY,
               visibility: titleVisibility,
             }}
-            className="pointer-events-none absolute inset-x-0 top-[8%] z-30 mx-auto max-w-5xl px-6 text-center md:top-[10%]"
+            className="pointer-events-none absolute inset-x-0 top-5 z-30 mx-auto max-w-5xl px-6 text-center md:top-7"
             aria-hidden
           >
             {titleComponent}
