@@ -3,13 +3,16 @@ import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { buildChatSystemPrompt } from "@/data/chatbot-prompt";
 import {
   CHAT_LIMITS,
+  consumeGlobalDailyBudget,
   consumeRateLimit,
   extractMessageText,
   getClientIp,
   isAllowedChatOrigin,
   isChatEnabled,
   isClientChatRole,
+  looksLikeOffTopic,
   looksLikePromptInjection,
+  trimMessagesForModel,
 } from "@/lib/chat";
 
 export const maxDuration = 30;
@@ -79,6 +82,19 @@ export async function POST(req: Request) {
     });
   }
 
+  const budget = consumeGlobalDailyBudget();
+  if (!budget.ok) {
+    return new Response("Ask AI daily budget reached. Try again tomorrow.", {
+      status: 429,
+      headers: {
+        "Retry-After": String(
+          Math.max(1, Math.ceil((budget.resetAt - Date.now()) / 1000)),
+        ),
+        "X-Chat-Budget": "exhausted",
+      },
+    });
+  }
+
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     return invalid("GOOGLE_GENERATIVE_AI_API_KEY is not configured.", 503);
   }
@@ -99,15 +115,16 @@ export async function POST(req: Request) {
   if (!latest.trim()) {
     return invalid("Empty user message.");
   }
-  if (looksLikePromptInjection(latest)) {
+  if (looksLikePromptInjection(latest) || looksLikeOffTopic(latest)) {
     return invalid("Message rejected.", 400);
   }
 
   try {
+    const context = trimMessagesForModel(messages);
     const result = streamText({
       model: google("gemini-2.5-flash"),
       system: systemPrompt,
-      messages: await convertToModelMessages(messages),
+      messages: await convertToModelMessages(context),
       maxOutputTokens: CHAT_LIMITS.maxOutputTokens,
       temperature: 0.3,
       abortSignal: req.signal,

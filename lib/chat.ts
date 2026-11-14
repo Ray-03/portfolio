@@ -5,9 +5,20 @@ export function isChatEnabled() {
   return value !== "false" && value !== "0" && value !== "off";
 }
 
+/** Site-wide daily cap across all visitors. Override with CHAT_DAILY_BUDGET. */
+export function getGlobalDailyBudget() {
+  const raw = process.env.CHAT_DAILY_BUDGET?.trim();
+  if (!raw) return 500;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return 500;
+  return parsed;
+}
+
 export const CHAT_LIMITS = {
   /** Room for a real back-and-forth; still bounds cost. */
   maxMessages: 24,
+  /** Only the newest turns are sent to the model (cost + focus). */
+  modelContextMessages: 10,
   maxChars: 2000,
   maxBodyBytes: 32_000,
   maxOutputTokens: 700,
@@ -48,6 +59,7 @@ type RateBucket = { count: number; resetAt: number };
 
 const minuteBuckets = new Map<string, RateBucket>();
 const dailyBuckets = new Map<string, RateBucket>();
+const globalDailyBuckets = new Map<string, RateBucket>();
 
 function consumeBucket(
   store: Map<string, RateBucket>,
@@ -103,6 +115,20 @@ export function consumeRateLimit(ip: string): {
   }
 
   return { ...minute, kind: "minute" };
+}
+
+/** Shared budget for the whole site (all IPs). Best-effort per serverless isolate. */
+export function consumeGlobalDailyBudget(): {
+  ok: boolean;
+  remaining: number;
+  resetAt: number;
+} {
+  return consumeBucket(
+    globalDailyBuckets,
+    "global",
+    CHAT_LIMITS.dailyWindowMs,
+    getGlobalDailyBudget(),
+  );
 }
 
 function hostFromUrl(value: string | null | undefined): string | null {
@@ -172,8 +198,33 @@ const BLOCKED_PATTERNS = [
   /\bdan mode\b/i,
 ];
 
+/** Clear free-work / general-AI abuse — skip if the ask still names Richard/portfolio. */
+const OFF_TOPIC_PATTERNS = [
+  /\b(write|generate|fix|debug)\b[\s\S]{0,60}\b(code|function|class|sql|regex|script)\b/i,
+  /\b(leetcode|hackerrank|homework|assignment|essay)\b/i,
+  /\b(weather|stock price|bitcoin|crypto)\b/i,
+  /\bwho (is|won) (the )?(current )?president\b/i,
+  /\btell me a (joke|story)\b/i,
+  /\bact as (a |an )?(general|unrestricted|evil)\b/i,
+];
+
+const PORTFOLIO_ANCHORS =
+  /\b(richard|rinaldy|portfolio|trainge|shopee|propertylim|binus|frontend|front-end|next\.?js|react)\b/i;
+
 export function looksLikePromptInjection(text: string): boolean {
   return BLOCKED_PATTERNS.some((pattern) => pattern.test(text));
+}
+
+export function looksLikeOffTopic(text: string): boolean {
+  if (PORTFOLIO_ANCHORS.test(text)) return false;
+  return OFF_TOPIC_PATTERNS.some((pattern) => pattern.test(text));
+}
+
+/** Keep recent turns only — lowers token cost and reduces prompt-injection surface. */
+export function trimMessagesForModel<T>(messages: T[]): T[] {
+  const limit = CHAT_LIMITS.modelContextMessages;
+  if (messages.length <= limit) return messages;
+  return messages.slice(-limit);
 }
 
 export function extractMessageText(parts: unknown): string {
