@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ["lucide-react", "react-icons"],
+    optimizePackageImports: ["lucide-react"],
   },
   allowedDevOrigins: [
     "192.168.100.9",
@@ -12,14 +12,6 @@ const nextConfig: NextConfig = {
     "*.ngrok.io",
     "*.trycloudflare.com",
   ],
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-    ],
-  },
 };
 
 export default nextConfig;
