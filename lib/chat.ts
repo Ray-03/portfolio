@@ -1,3 +1,10 @@
+/** Kill switch: set CHAT_ENABLED=false on Vercel/local to pause Ask AI. Default on. */
+export function isChatEnabled() {
+  const value = process.env.CHAT_ENABLED?.trim().toLowerCase();
+  if (!value) return true;
+  return value !== "false" && value !== "0" && value !== "off";
+}
+
 export const CHAT_LIMITS = {
   /** Room for a real back-and-forth; still bounds cost. */
   maxMessages: 24,

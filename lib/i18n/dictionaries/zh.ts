@@ -94,6 +94,7 @@ export const zh: Dictionary = {
     error: "出了点问题，这个助手可能还没配置好。请直接通过邮件联系 Richard。",
     rateLimit: "来自此网络的提问过多。请稍等一分钟后再询问 Richard 的作品集。",
     rejected: "该请求已被拦截。请只询问 Richard 的工作、技术栈或背景。",
+    disabled: "Ask AI 暂时关闭。仍可通过邮件或 LinkedIn 联系 Richard。",
   },
   interests: {
     title: "兴趣",

@@ -97,6 +97,8 @@ export const de: Dictionary = {
       "Zu viele Anfragen aus diesem Netzwerk. Warte eine Minute und frag erneut zu Richards Portfolio.",
     rejected:
       "Anfrage blockiert. Frag nur nach Richards Arbeit, Stack oder Hintergrund.",
+    disabled:
+      "Ask AI ist gerade pausiert. Per E-Mail oder LinkedIn erreichst du Richard weiterhin.",
   },
   interests: {
     title: "Interessen",

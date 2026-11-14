@@ -96,6 +96,8 @@ export const en = {
       "Too many questions from this network. Wait a minute, then ask about Richard's portfolio again.",
     rejected:
       "That request was blocked. Ask about Richard's work, stack, or background only.",
+    disabled:
+      "Ask AI is paused right now. Email or LinkedIn still reach Richard directly.",
   },
   interests: {
     title: "Interests",

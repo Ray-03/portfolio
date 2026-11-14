@@ -1,6 +1,7 @@
 import { AskTerminal } from "@/components/portfolio/ask-terminal";
 import { CodexArchives } from "@/components/portfolio/codex-archives";
 import { HeroDecree } from "@/components/portfolio/hero-decree";
+import { isChatEnabled } from "@/lib/chat";
 import type { HomeContent } from "@/lib/portfolio/types";
 
 function indexLabel(index: number) {
@@ -48,7 +49,7 @@ export function HomeView({ content }: { content: HomeContent }) {
         </ol>
       </section>
 
-      <AskTerminal />
+      <AskTerminal enabled={isChatEnabled()} />
 
       <section aria-labelledby="work-heading" className="work-stage">
         <div className="work-sticky">

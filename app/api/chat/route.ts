@@ -7,6 +7,7 @@ import {
   extractMessageText,
   getClientIp,
   isAllowedChatOrigin,
+  isChatEnabled,
   isClientChatRole,
   looksLikePromptInjection,
 } from "@/lib/chat";
@@ -52,6 +53,10 @@ function lastUserText(messages: UIMessage[]): string {
 }
 
 export async function POST(req: Request) {
+  if (!isChatEnabled()) {
+    return invalid("Ask AI is temporarily disabled.", 503);
+  }
+
   if (!isAllowedChatOrigin(req)) {
     return invalid("Forbidden origin.", 403);
   }

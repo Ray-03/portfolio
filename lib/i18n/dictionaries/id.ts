@@ -97,6 +97,8 @@ export const id: Dictionary = {
       "Terlalu banyak pertanyaan dari jaringan ini. Tunggu sebentar, lalu tanya lagi soal portofolio Richard.",
     rejected:
       "Permintaan ditolak. Tanya hanya soal kerja, stack, atau latar belakang Richard.",
+    disabled:
+      "Ask AI sedang dinonaktifkan. Email atau LinkedIn tetap bisa menghubungi Richard.",
   },
   interests: {
     title: "Minat",

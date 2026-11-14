@@ -20,7 +20,7 @@ function messageText(message: UIMessage) {
     .join("");
 }
 
-export function AskTerminal() {
+export function AskTerminal({ enabled = true }: { enabled?: boolean }) {
   const { dict } = useI18n();
   const copy = dict.chatbot;
   const [input, setInput] = useState("");
@@ -36,8 +36,11 @@ export function AskTerminal() {
           if (response.status === 429) {
             throw new Error("RATE_LIMIT");
           }
-          if (response.status === 400) {
+          if (response.status === 400 || response.status === 403) {
             throw new Error("REJECTED");
+          }
+          if (response.status === 503) {
+            throw new Error("DISABLED");
           }
           if (!response.ok) {
             throw new Error("CHAT_ERROR");
@@ -52,16 +55,20 @@ export function AskTerminal() {
     transport,
   });
 
-  const errorMessage =
-    error?.message === "RATE_LIMIT"
+  const errorMessage = !enabled
+    ? copy.disabled
+    : error?.message === "RATE_LIMIT"
       ? copy.rateLimit
-      : error?.message === "REJECTED"
-        ? copy.rejected
+      : error?.message === "REJECTED" || error?.message === "DISABLED"
+        ? error.message === "DISABLED"
+          ? copy.disabled
+          : copy.rejected
         : error
           ? copy.error
           : null;
 
   const busy = status === "submitted" || status === "streaming";
+  const locked = !enabled || busy;
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -71,7 +78,7 @@ export function AskTerminal() {
 
   async function ask(text: string) {
     const trimmed = text.trim();
-    if (!trimmed || busy) return;
+    if (!trimmed || !enabled || busy) return;
     setInput("");
     await sendMessage({ text: trimmed });
   }
@@ -122,9 +129,10 @@ export function AskTerminal() {
             {copy.boot.map((line) => (
               <p key={line}>{line}</p>
             ))}
+            {!enabled ? <p className="text-[#ff6b6b]">{copy.disabled}</p> : null}
           </div>
 
-          {messages.length === 0 ? (
+          {enabled && messages.length === 0 ? (
             <div className="mt-5 space-y-2">
               <p className="text-[color:var(--term-muted)]">{copy.suggestionsLabel}</p>
               {copy.suggestions.map((suggestion) => (
@@ -133,7 +141,7 @@ export function AskTerminal() {
                   type="button"
                   className="block max-w-full truncate text-left text-[color:var(--term-accent)] transition-colors hover:text-[color:var(--term-fg)]"
                   onClick={() => void ask(suggestion)}
-                  disabled={busy}
+                  disabled={locked}
                 >
                   <span className="text-[color:var(--term-muted)]">$ </span>
                   {suggestion}
@@ -214,8 +222,8 @@ export function AskTerminal() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               onKeyDown={onKeyDown}
-              placeholder={copy.placeholder}
-              disabled={busy}
+              placeholder={enabled ? copy.placeholder : copy.disabled}
+              disabled={locked}
               autoComplete="off"
               spellCheck={false}
               className="min-w-0 flex-1 bg-transparent text-[color:var(--term-fg)] outline-none placeholder:text-[color:var(--term-muted)] disabled:opacity-60"
@@ -231,14 +239,16 @@ export function AskTerminal() {
             ) : (
               <button
                 type="submit"
-                disabled={!input.trim()}
+                disabled={!enabled || !input.trim()}
                 className="shrink-0 text-[11px] tracking-[0.08em] text-[color:var(--term-accent)] uppercase disabled:opacity-40"
               >
                 {copy.send}
               </button>
             )}
           </form>
-          <p className="mt-2 text-[11px] text-[color:var(--term-muted)]">{copy.hint}</p>
+          <p className="mt-2 text-[11px] text-[color:var(--term-muted)]">
+            {enabled ? copy.hint : copy.disabled}
+          </p>
         </div>
       </div>
     </section>
