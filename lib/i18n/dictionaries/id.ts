@@ -8,18 +8,11 @@ export const id: Dictionary = {
       "Richard Rinaldy, Full-Stack & Front-End engineer di Tangerang. React, Next.js, TypeScript, dan SEO terukur untuk produk di Singapura, Taiwan, dan Indonesia.",
   },
   apps: {
-    portfolio: "Portofolio",
-    chatbot: "Tanya AI",
-    interests: "Minat",
-    linkedin: "LinkedIn",
     github: "GitHub",
-    email: "Email",
-    contact: "Kontak",
   },
   hero: {
     tagline:
       `Engineer React & Next.js di Tangerang — SEO dan skala untuk Singapura, Taiwan, dan Indonesia sejak ${siteConfig.careerStartYear}.`,
-    scrollHint: "Geser untuk masuk",
   },
   shell: {
     proof: "Bukti terpilih",
@@ -72,7 +65,6 @@ export const id: Dictionary = {
   },
   chatbot: {
     title: "Tanya AI",
-    back: "Beranda",
     lead: "Buka sesi terminal dengan asisten Richard — tanya soal kerja, stack, atau hobinya seperti ChatGPT.",
     placeholder: "tanya soal kerja Richard…",
     send: "enter",
@@ -101,105 +93,6 @@ export const id: Dictionary = {
       "Ask AI sedang dinonaktifkan. Email atau LinkedIn tetap bisa menghubungi Richard.",
     budget:
       "Ask AI sudah mencapai batas harian situs. Coba lagi besok, atau email Richard langsung.",
-  },
-  interests: {
-    title: "Minat",
-    back: "Beranda",
-    lead: "Beberapa hal di luar ngoding.",
-    tabs: {
-      photography: "Fotografi",
-      music: "Musik",
-      travel: "Travel",
-      fitness: "Fitness & Tech",
-    },
-    photography: {
-      intro:
-        "Fotografi landscape — setting kamera manual, RAW capture, dan framing yang luas dan tenang.",
-      photos: [
-        {
-          alt: "Punggung gunung saat matahari terbit",
-          src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Danau alpine tenang memantulkan puncak gunung",
-          src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Jalan membelah hutan yang sepi",
-          src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Deretan pegunungan saat senja",
-          src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Lembah luas di bawah langit terbuka",
-          src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Golden hour di atas danau gunung",
-          src: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?auto=format&fit=crop&w=1200&q=80",
-        },
-      ],
-      placeholderNote: "Contoh foto dulu — foto asli menyusul.",
-    },
-    music: {
-      intro: "Kebanyakan dengar instrumental dan scoring sinematik saat kerja.",
-      tracks: [
-        { title: "Mix fokus sinematik", mood: "Sinematik", href: "" },
-        { title: "Set instrumental larut malam", mood: "Instrumental", href: "" },
-        { title: "Musik ambient buat build", mood: "Ambient", href: "" },
-      ],
-      placeholderNote: "Track placeholder — link asli menyusul.",
-    },
-    travel: {
-      intro: "Trip ke Eropa dan Asia, suka juga sama sejarah di balik tempatnya.",
-      trips: [
-        {
-          place: "Prancis",
-          region: "Eropa",
-          note: "Kota, pedesaan, dan sejarah berabad-abad.",
-        },
-        {
-          place: "Swiss",
-          region: "Eropa",
-          note: "Kota kecil pegunungan Alpen dan pemandangan tenang.",
-        },
-        {
-          place: "Korea Selatan",
-          region: "Asia",
-          note: "Kota modern berdampingan dengan istana lama.",
-        },
-        {
-          place: "Jepang",
-          region: "Asia",
-          note: "Kuil, musim, dan desain yang dipikirkan matang.",
-        },
-        {
-          place: "Italia",
-          region: "Eropa",
-          note: "Sejarah kuno menyatu di jalanan sehari-hari.",
-        },
-      ],
-    },
-    fitness: {
-      intro: "Membangun hal lain di luar layar juga — satu part PC, satu set latihan.",
-      pcBuildTitle: "Custom PC Build",
-      pcBuild: [
-        { label: "Case", value: "Lian Li (model persis menyusul)" },
-        {
-          label: "Cooling",
-          value: "Liquid cooling be quiet! (model persis menyusul)",
-        },
-        {
-          label: "Fokus",
-          value: "Build yang tenang, cable management rapi, thermal stabil.",
-        },
-      ],
-      trainingTitle: "Filosofi Latihan",
-      trainingBody:
-        "Ikut rutin Push-Pull-Legs (PPL) — konsisten dibanding intens, progres bertahap.",
-    },
   },
   portfolio: {
     title: "Portofolio",
@@ -303,10 +196,6 @@ export const id: Dictionary = {
     switchToLight: "Ganti ke mode terang",
     switchToDark: "Ganti ke mode gelap",
     language: "Bahasa",
-    openMenu: "Buka menu",
-    closeMenu: "Tutup menu",
-    close: "Tutup",
-    theme: "Tema",
     skipToContent: "Loncat ke konten",
   },
 };

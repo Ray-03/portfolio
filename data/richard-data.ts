@@ -151,5 +151,3 @@ export const richardData = {
     },
   ],
 } as const;
-
-export type RichardData = typeof richardData;

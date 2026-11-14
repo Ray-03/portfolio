@@ -41,11 +41,6 @@ export function isClientChatRole(
   return typeof value === "string" && ALLOWED_CLIENT_ROLES.has(value);
 }
 
-/** @deprecated use isClientChatRole — system role must never come from the client */
-export function isChatRole(value: unknown): value is "user" | "assistant" | "system" {
-  return value === "user" || value === "assistant" || value === "system";
-}
-
 export function getClientIp(req: Request): string {
   const forwarded = req.headers.get("x-forwarded-for");
   if (forwarded) {

@@ -8,18 +8,11 @@ export const zh: Dictionary = {
       "Richard Rinaldy，丹格朗全栈与前端工程师。擅长 React、Next.js、TypeScript，以及新加坡、台湾与印尼产品的可量化 SEO。",
   },
   apps: {
-    portfolio: "作品集",
-    chatbot: "问问 AI",
-    interests: "兴趣",
-    linkedin: "LinkedIn",
     github: "GitHub",
-    email: "邮件",
-    contact: "联系方式",
   },
   hero: {
     tagline:
       `丹格朗的 React / Next.js 工程师 — 自 ${siteConfig.careerStartYear} 年起为新加坡、台湾与印尼打造可量化 SEO 与可扩展产品。`,
-    scrollHint: "向下滚动以进入",
   },
   shell: {
     proof: "精选成果",
@@ -72,7 +65,6 @@ export const zh: Dictionary = {
   },
   chatbot: {
     title: "问问 AI",
-    back: "主屏幕",
     lead: "打开终端会话，像 ChatGPT 一样询问 Richard 的工作、技术栈或兴趣。",
     placeholder: "问问 Richard 的工作…",
     send: "enter",
@@ -96,78 +88,6 @@ export const zh: Dictionary = {
     rejected: "该请求已被拦截。请只询问 Richard 的工作、技术栈或背景。",
     disabled: "Ask AI 暂时关闭。仍可通过邮件或 LinkedIn 联系 Richard。",
     budget: "Ask AI 已达今日全站上限。请明天再试，或直接发邮件联系 Richard。",
-  },
-  interests: {
-    title: "兴趣",
-    back: "主屏幕",
-    lead: "写代码之外的一些爱好。",
-    tabs: {
-      photography: "摄影",
-      music: "音乐",
-      travel: "旅行",
-      fitness: "健身与科技",
-    },
-    photography: {
-      intro: "风景摄影——手动相机设置、RAW 格式拍摄，偏好宽阔、安静的构图。",
-      photos: [
-        {
-          alt: "日出时的山脊",
-          src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "映照山峰的宁静高山湖",
-          src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "穿过静谧森林的道路",
-          src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "黄昏中层叠的山脉",
-          src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "开阔天空下的宽广山谷",
-          src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "山间湖泊上的黄金时刻",
-          src: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?auto=format&fit=crop&w=1200&q=80",
-        },
-      ],
-      placeholderNote: "目前为示例照片，真实照片稍后添加。",
-    },
-    music: {
-      intro: "工作时大多听纯音乐和电影配乐风格的曲子。",
-      tracks: [
-        { title: "电影感专注歌单", mood: "电影感", href: "" },
-        { title: "深夜纯音乐合集", mood: "纯音乐", href: "" },
-        { title: "环境音乐", mood: "氛围", href: "" },
-      ],
-      placeholderNote: "示例曲目——真实链接稍后添加。",
-    },
-    travel: {
-      intro: "去过欧洲和亚洲，也喜欢了解每个地方背后的历史。",
-      trips: [
-        { place: "法国", region: "欧洲", note: "城市、乡村与数百年的历史。" },
-        { place: "瑞士", region: "欧洲", note: "阿尔卑斯小镇与宁静的山景。" },
-        { place: "韩国", region: "亚洲", note: "现代都市与古老宫殿并存。" },
-        { place: "日本", region: "亚洲", note: "寺庙、四季与用心的设计。" },
-        { place: "意大利", region: "欧洲", note: "古老历史融入日常街景。" },
-      ],
-    },
-    fitness: {
-      intro: "屏幕之外也在动手——一次装一个电脑部件，一次练一组动作。",
-      pcBuildTitle: "自定义 PC 主机",
-      pcBuild: [
-        { label: "机箱", value: "Lian Li（具体型号待补充）" },
-        { label: "散热", value: "be quiet! 水冷（具体型号待补充）" },
-        { label: "重点", value: "安静、理线整洁、散热稳定的装机风格。" },
-      ],
-      trainingTitle: "训练理念",
-      trainingBody:
-        "遵循 Push-Pull-Legs（PPL）训练安排——注重持续性而非强度，稳步进步。",
-    },
   },
   portfolio: {
     title: "作品集",
@@ -265,10 +185,6 @@ export const zh: Dictionary = {
     switchToLight: "切换到浅色模式",
     switchToDark: "切换到深色模式",
     language: "语言",
-    openMenu: "打开菜单",
-    closeMenu: "关闭菜单",
-    close: "关闭",
-    theme: "主题",
     skipToContent: "跳到正文",
   },
 };
