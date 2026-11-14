@@ -17,8 +17,8 @@ export const id: Dictionary = {
   shell: {
     proof: "Bukti terpilih",
     about: "Tentang",
-    exploreCodex: "Buka Kodeks",
-    classified: "Terklasifikasi",
+    exploreCodex: "Lihat proyek",
+    classified: "Internal",
   },
   about: {
     role: "Full-Stack & Front-End Software Engineer",

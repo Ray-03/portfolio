@@ -16,8 +16,8 @@ export const en = {
   shell: {
     proof: "Selected proof",
     about: "About",
-    exploreCodex: "Explore Codex",
-    classified: "Classified",
+    exploreCodex: "View projects",
+    classified: "Internal",
   },
   about: {
     role: "Full-Stack & Front-End Software Engineer",

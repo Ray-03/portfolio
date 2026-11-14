@@ -17,8 +17,8 @@ export const zh: Dictionary = {
   shell: {
     proof: "精选成果",
     about: "关于",
-    exploreCodex: "打开典籍",
-    classified: "机密",
+    exploreCodex: "查看项目",
+    classified: "内部项目",
   },
   about: {
     role: "全栈与前端软件工程师",

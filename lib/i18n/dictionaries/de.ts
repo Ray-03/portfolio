@@ -17,8 +17,8 @@ export const de: Dictionary = {
   shell: {
     proof: "Ausgewählte Belege",
     about: "Über",
-    exploreCodex: "Kodex öffnen",
-    classified: "Verschlusssache",
+    exploreCodex: "Projekte ansehen",
+    classified: "Intern",
   },
   about: {
     role: "Full-Stack & Front-End Software Engineer",
