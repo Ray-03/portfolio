@@ -1,6 +1,7 @@
 import { AskTerminal } from "@/components/portfolio/ask-terminal";
 import { CodexArchives } from "@/components/portfolio/codex-archives";
 import { HeroDecree } from "@/components/portfolio/hero-decree";
+import { PhoneScroll } from "@/components/portfolio/phone-scroll";
 import { isChatEnabled } from "@/lib/chat";
 import type { HomeContent } from "@/lib/portfolio/types";
 
@@ -20,6 +21,12 @@ export function HomeView({ content }: { content: HomeContent }) {
         exploreLabel={content.exploreLabel}
         proofs={content.proofs}
         links={content.links}
+      />
+
+      <PhoneScroll
+        aboutTitle={content.aboutTitle}
+        lead={content.lead}
+        name={content.name}
       />
 
       <section aria-labelledby="proof-heading">
@@ -75,60 +82,51 @@ export function HomeView({ content }: { content: HomeContent }) {
         </div>
       </section>
 
-      <section aria-labelledby="about-heading">
+      <section aria-labelledby="skills-heading">
         <h2
-          id="about-heading"
+          id="skills-heading"
           className="font-heading text-4xl font-medium tracking-[0.035em] text-foreground"
         >
-          {content.aboutTitle}
+          {content.skillsLabel}
         </h2>
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-foreground/85">
-          {content.lead}
-        </p>
-
-        <div className="mt-10">
-          <p className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
-            {content.skillsLabel}
-          </p>
-          <ul className="mt-5 divide-y divide-border border-y border-border">
-            {content.skills.map((skill) => (
-              <li
-                key={skill.id}
-                className="grid gap-3 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:items-center sm:gap-8"
-              >
-                <div>
-                  <p className="text-sm font-medium tracking-[0.02em] text-foreground">
-                    {skill.label}
-                  </p>
-                  <p
-                    className="mt-1 font-mono text-[11px] tabular-nums tracking-[0.08em] text-primary"
-                    aria-label={`${skill.level} of 100`}
-                  >
-                    {skill.level}
-                  </p>
-                </div>
-                <div>
+        <ul className="mt-8 divide-y divide-border border-y border-border">
+          {content.skills.map((skill) => (
+            <li
+              key={skill.id}
+              className="grid gap-3 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:items-center sm:gap-8"
+            >
+              <div>
+                <p className="text-sm font-medium tracking-[0.02em] text-foreground">
+                  {skill.label}
+                </p>
+                <p
+                  className="mt-1 font-mono text-[11px] tabular-nums tracking-[0.08em] text-primary"
+                  aria-label={`${skill.level} of 100`}
+                >
+                  {skill.level}
+                </p>
+              </div>
+              <div>
+                <div
+                  className="h-0.5 w-full overflow-hidden bg-border"
+                  role="meter"
+                  aria-valuenow={skill.level}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={skill.label}
+                >
                   <div
-                    className="h-0.5 w-full overflow-hidden bg-border"
-                    role="meter"
-                    aria-valuenow={skill.level}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={skill.label}
-                  >
-                    <div
-                      className="h-full bg-primary transition-[width] duration-700 ease-out"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {skill.detail}
-                  </p>
+                    className="h-full bg-primary transition-[width] duration-700 ease-out"
+                    style={{ width: `${skill.level}%` }}
+                  />
                 </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {skill.detail}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
 
         <div className="mt-10">
           <p className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
