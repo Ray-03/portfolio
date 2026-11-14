@@ -1,8 +1,14 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { PhoneFrame } from "@/components/portfolio/phone-frame";
+import dynamic from "next/dynamic";
+import { useScroll } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+const PhoneCanvas = dynamic(
+  () =>
+    import("@/components/portfolio/phone-canvas").then((m) => m.PhoneCanvas),
+  { ssr: false },
+);
 
 type PhoneScrollProps = {
   aboutTitle: string;
@@ -10,25 +16,46 @@ type PhoneScrollProps = {
   name: string;
 };
 
+function PhonePlaceholder() {
+  return (
+    <div
+      aria-hidden
+      className="h-[28rem] w-[20rem] rounded-[2rem] border border-[color:var(--gold)]/40 bg-[var(--espresso)] sm:h-[32rem] sm:w-[24rem]"
+      style={{ transform: "rotateZ(-22deg)" }}
+    />
+  );
+}
+
 /**
  * Reference reel: phone stays upright (top stays top), leaned on Z,
  * spins 360° on Y (back → side → front → side → back). Slight pitch on X.
+ * 3D GLB loads lazily once the section nears the viewport.
  */
 export function PhoneScroll({ aboutTitle, lead, name }: PhoneScrollProps) {
   const trackRef = useRef<HTMLElement>(null);
+  const [mountCanvas, setMountCanvas] = useState(false);
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
 
-  const rotateY = useTransform(scrollYProgress, [0, 1], [180, 540]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [18, 12, 18]);
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], [28, 0, 18]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [12, -8, 10]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.82, 1.05, 0.82]);
-  const popZ = useTransform(scrollYProgress, [0.36, 0.5, 0.64], [0, 170, 0]);
-  const popScale = useTransform(scrollYProgress, [0.36, 0.5, 0.64], [0.92, 1.28, 0.92]);
-  const popOpacity = useTransform(scrollYProgress, [0.3, 0.4, 0.6, 0.7], [0, 1, 1, 0]);
+  useEffect(() => {
+    const node = trackRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setMountCanvas(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
@@ -50,32 +77,16 @@ export function PhoneScroll({ aboutTitle, lead, name }: PhoneScrollProps) {
             </p>
           </div>
 
-          <div className="flex justify-center [perspective:1200px] md:justify-end">
-            <div
-              style={{
-                transform: "rotateZ(-22deg)",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              <motion.div
-                style={{
-                  rotateY,
-                  rotateX,
-                  x,
-                  y,
-                  scale,
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <PhoneFrame
-                  src="/portrait.png"
-                  alt={name}
-                  popZ={popZ}
-                  popScale={popScale}
-                  popOpacity={popOpacity}
-                />
-              </motion.div>
-            </div>
+          <div className="flex justify-center md:justify-end">
+            {mountCanvas ? (
+              <PhoneCanvas
+                progress={scrollYProgress}
+                portraitSrc="/portrait.png"
+                alt={name}
+              />
+            ) : (
+              <PhonePlaceholder />
+            )}
           </div>
         </div>
       </div>
