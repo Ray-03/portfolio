@@ -1,0 +1,334 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-plex-sans), var(--font-noto-sc), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-heading: var(--font-cormorant), var(--font-noto-serif-sc),
+    var(--font-noto-sc), ui-serif, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+  French Baroque night: espresso ground, wine panels, antique gold,
+  bronze rules, parchment for the words. Light mode is the same room
+  on a sheet of parchment.
+*/
+:root,
+.dark {
+  --radius: 0.25rem;
+
+  --motion-fast: 160ms;
+  --motion-ui: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --espresso: #120f0d;
+  --wine: #1a0f10;
+  --gold: #d4af37;
+  --bronze: #8c7853;
+  --parchment: #f4ecd8;
+
+  --background: var(--espresso);
+  --foreground: var(--parchment);
+
+  --card: var(--wine);
+  --card-foreground: var(--parchment);
+
+  --popover: var(--wine);
+  --popover-foreground: var(--parchment);
+
+  --primary: var(--gold);
+  --primary-foreground: var(--espresso);
+
+  --secondary: var(--bronze);
+  --secondary-foreground: var(--parchment);
+
+  --muted: var(--wine);
+  --muted-foreground: #cbbfa6;
+
+  --accent: #2a1c14;
+  --accent-foreground: var(--gold);
+
+  --destructive: #8f3a3a;
+
+  --border: color-mix(in srgb, var(--bronze) 70%, var(--espresso));
+  --input: color-mix(in srgb, var(--bronze) 55%, var(--espresso));
+  --ring: var(--gold);
+
+  --chart-1: var(--gold);
+  --chart-2: var(--bronze);
+  --chart-3: var(--parchment);
+  --chart-4: #6e2a32;
+  --chart-5: var(--wine);
+
+  --sidebar: var(--espresso);
+  --sidebar-foreground: var(--parchment);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: var(--espresso);
+  --sidebar-accent: var(--wine);
+  --sidebar-accent-foreground: var(--gold);
+  --sidebar-border: color-mix(in srgb, var(--bronze) 70%, var(--espresso));
+  --sidebar-ring: var(--gold);
+
+  --candle: color-mix(in srgb, var(--gold) 28%, transparent);
+  --vignette: color-mix(in srgb, var(--wine) 88%, black);
+}
+
+html.light {
+  --background: var(--parchment);
+  --foreground: var(--espresso);
+
+  --card: #efe4cc;
+  --card-foreground: var(--espresso);
+
+  --popover: #efe4cc;
+  --popover-foreground: var(--espresso);
+
+  --primary: #7a5b16;
+  --primary-foreground: var(--parchment);
+
+  --secondary: var(--bronze);
+  --secondary-foreground: var(--espresso);
+
+  --muted: #e7dcc4;
+  --muted-foreground: #5c4e3a;
+
+  --accent: #eadfc8;
+  --accent-foreground: #7a5b16;
+
+  --border: color-mix(in srgb, var(--bronze) 65%, var(--parchment));
+  --input: color-mix(in srgb, var(--bronze) 45%, var(--parchment));
+  --ring: #7a5b16;
+
+  --sidebar: var(--parchment);
+  --sidebar-foreground: var(--espresso);
+  --sidebar-primary: #7a5b16;
+  --sidebar-primary-foreground: var(--parchment);
+  --sidebar-accent: #eadfc8;
+  --sidebar-accent-foreground: #7a5b16;
+  --sidebar-border: color-mix(in srgb, var(--bronze) 65%, var(--parchment));
+  --sidebar-ring: #7a5b16;
+
+  --candle: color-mix(in srgb, var(--gold) 34%, transparent);
+  --vignette: color-mix(in srgb, var(--bronze) 28%, transparent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading), ui-serif, serif;
+    letter-spacing: 0.035em;
+  }
+}
+
+.animus-vignette {
+  background:
+    radial-gradient(38% 28% at 0% 0%, var(--candle), transparent 72%),
+    radial-gradient(34% 26% at 100% 100%, var(--candle), transparent 70%),
+    radial-gradient(ellipse at center, transparent 36%, var(--vignette) 100%);
+}
+
+.animus-grain {
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  animation: grain-shift 0.7s steps(2) infinite;
+}
+
+.animus-scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(244, 236, 216, 0.07) 3px
+  );
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+}
+
+.codex-entry {
+  background: color-mix(in srgb, var(--wine) 72%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bronze) 55%, transparent);
+}
+
+.codex-filigree path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.4;
+  transition: opacity 180ms linear, filter 180ms linear;
+}
+
+.codex-entry:hover .codex-filigree path,
+.codex-entry[data-open="true"] .codex-filigree path {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 70%, transparent));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codex-filigree path {
+    transition: none;
+  }
+}
+
+.codex-stamp {
+  border: 1.5px dashed var(--gold);
+  padding: 0.7rem 0.85rem;
+  color: var(--gold);
+  transform: rotate(-1.5deg);
+}
+
+@keyframes grain-shift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 160px -80px;
+  }
+}
+
+.layer-far,
+.layer-near,
+.layer-caption {
+  transform: translate3d(0, 0, 0);
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .layer-far {
+      animation: layer-far linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+    .layer-near {
+      animation: layer-near linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    .layer-caption {
+      animation: layer-caption linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 70%;
+    }
+  }
+}
+
+@keyframes layer-far {
+  from {
+    transform: translate3d(0, 10%, 0);
+  }
+  to {
+    transform: translate3d(0, -24%, 0);
+  }
+}
+
+@keyframes layer-near {
+  from {
+    transform: translate3d(0, 22%, 0);
+  }
+  to {
+    transform: translate3d(0, -32%, 0);
+  }
+}
+
+@keyframes layer-caption {
+  from {
+    transform: translate3d(-1.25rem, 0, 0);
+  }
+  to {
+    transform: translate3d(1.25rem, 0, 0);
+  }
+}
+
+@media (min-width: 768px) {
+  .work-stage {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .work-sticky {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animus-grain {
+    animation: none;
+  }
+}
+
