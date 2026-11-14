@@ -99,6 +99,8 @@ export const id: Dictionary = {
       "Permintaan ditolak. Tanya hanya soal kerja, stack, atau latar belakang Richard.",
     disabled:
       "Ask AI sedang dinonaktifkan. Email atau LinkedIn tetap bisa menghubungi Richard.",
+    budget:
+      "Ask AI sudah mencapai batas harian situs. Coba lagi besok, atau email Richard langsung.",
   },
   interests: {
     title: "Minat",

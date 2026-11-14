@@ -98,6 +98,8 @@ export const en = {
       "That request was blocked. Ask about Richard's work, stack, or background only.",
     disabled:
       "Ask AI is paused right now. Email or LinkedIn still reach Richard directly.",
+    budget:
+      "Ask AI hit today's site-wide limit. Check back tomorrow, or email Richard directly.",
   },
   interests: {
     title: "Interests",

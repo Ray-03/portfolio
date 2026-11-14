@@ -99,6 +99,8 @@ export const de: Dictionary = {
       "Anfrage blockiert. Frag nur nach Richards Arbeit, Stack oder Hintergrund.",
     disabled:
       "Ask AI ist gerade pausiert. Per E-Mail oder LinkedIn erreichst du Richard weiterhin.",
+    budget:
+      "Ask AI hat das heutige Site-Limit erreicht. Schau morgen wieder vorbei oder schreib Richard per E-Mail.",
   },
   interests: {
     title: "Interessen",

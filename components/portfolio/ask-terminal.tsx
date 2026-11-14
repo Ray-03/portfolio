@@ -34,7 +34,8 @@ export function AskTerminal({ enabled = true }: { enabled?: boolean }) {
         fetch: async (input, init) => {
           const response = await fetch(input, init);
           if (response.status === 429) {
-            throw new Error("RATE_LIMIT");
+            const budget = response.headers.get("X-Chat-Budget");
+            throw new Error(budget === "exhausted" ? "BUDGET" : "RATE_LIMIT");
           }
           if (response.status === 400 || response.status === 403) {
             throw new Error("REJECTED");
@@ -59,13 +60,15 @@ export function AskTerminal({ enabled = true }: { enabled?: boolean }) {
     ? copy.disabled
     : error?.message === "RATE_LIMIT"
       ? copy.rateLimit
-      : error?.message === "REJECTED" || error?.message === "DISABLED"
-        ? error.message === "DISABLED"
+      : error?.message === "BUDGET"
+        ? copy.budget
+        : error?.message === "DISABLED"
           ? copy.disabled
-          : copy.rejected
-        : error
-          ? copy.error
-          : null;
+          : error?.message === "REJECTED"
+            ? copy.rejected
+            : error
+              ? copy.error
+              : null;
 
   const busy = status === "submitted" || status === "streaming";
   const locked = !enabled || busy;
