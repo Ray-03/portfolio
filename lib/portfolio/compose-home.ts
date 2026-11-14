@@ -1,3 +1,4 @@
+import { richardData } from "@/data/richard-data";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import type { HomeContent, WorkCategory } from "@/lib/portfolio/types";
@@ -72,6 +73,16 @@ export function composeHome(dict: Dictionary, locale: Locale): HomeContent {
     stackLabel: dict.portfolio.stackLabel,
     classifiedLabel: dict.shell.classified,
     aboutTitle: dict.shell.about,
+    skillsLabel: dict.about.skillsLabel,
+    skills: richardData.skillStats.map((stat) => {
+      const copy = dict.about.skills[stat.id];
+      return {
+        id: stat.id,
+        label: copy.label,
+        detail: copy.detail,
+        level: stat.level,
+      };
+    }),
     educationLabel: dict.about.educationLabel,
     education: dict.about.education,
     credentials: dict.about.credentials.map((item) => ({

@@ -38,11 +38,26 @@ export const id: Dictionary = {
     educationLabel: "Pendidikan",
     education: "S1 Computer Science · Binus University · IPK 3.71",
     skills: {
-      frontend: { label: "Front-End", detail: "React · Next.js · TypeScript" },
-      seo: { label: "SEO & i18n", detail: "Lighthouse · Merchant · locale" },
-      fullstack: { label: "Full-Stack", detail: "Node.js · Python" },
-      systems: { label: "Sistem", detail: "Scale · storage · search" },
-      cloud: { label: "Cloud", detail: "AWS" },
+      frontend: {
+        label: "Front-End",
+        detail: "React · Next.js · TypeScript · Tailwind · Zustand · React Query",
+      },
+      seo: {
+        label: "SEO & i18n",
+        detail: "JSON-LD · Merchant Center · locale · Lighthouse · GTM",
+      },
+      fullstack: {
+        label: "Full-Stack",
+        detail: "Node.js · NestJS · Python · REST APIs",
+      },
+      systems: {
+        label: "Sistem",
+        detail: "PostgreSQL · Elasticsearch · Ceph · MySQL",
+      },
+      cloud: {
+        label: "Cloud",
+        detail: "AWS · GCP · Docker · Cloud Run",
+      },
     },
     credentials: [
       {

@@ -38,11 +38,26 @@ export const de: Dictionary = {
     educationLabel: "Ausbildung",
     education: "B.S. Computer Science · Binus University · GPA 3.71",
     skills: {
-      frontend: { label: "Front-End", detail: "React · Next.js · TypeScript" },
-      seo: { label: "SEO & i18n", detail: "Lighthouse · Merchant · Locales" },
-      fullstack: { label: "Full-Stack", detail: "Node.js · Python" },
-      systems: { label: "Systeme", detail: "Scale · Storage · Search" },
-      cloud: { label: "Cloud", detail: "AWS" },
+      frontend: {
+        label: "Front-End",
+        detail: "React · Next.js · TypeScript · Tailwind · Zustand · React Query",
+      },
+      seo: {
+        label: "SEO & i18n",
+        detail: "JSON-LD · Merchant Center · Locales · Lighthouse · GTM",
+      },
+      fullstack: {
+        label: "Full-Stack",
+        detail: "Node.js · NestJS · Python · REST APIs",
+      },
+      systems: {
+        label: "Systeme",
+        detail: "PostgreSQL · Elasticsearch · Ceph · MySQL",
+      },
+      cloud: {
+        label: "Cloud",
+        detail: "AWS · GCP · Docker · Cloud Run",
+      },
     },
     credentials: [
       {

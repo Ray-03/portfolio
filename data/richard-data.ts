@@ -70,11 +70,33 @@ export const richardData = {
   ],
 
   techStack: {
-    frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-    backend: ["Node.js", "Python"],
-    dataAndInfra: ["PostgreSQL", "Elasticsearch", "Ceph Distributed Storage"],
-    cloud: ["AWS"],
-    practices: ["SEO architecture", "i18n / multi-language systems", "JSON-LD structured data"],
+    frontend: [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "Zustand",
+      "React Query",
+      "Framer Motion",
+    ],
+    backend: ["Node.js", "NestJS", "Python", "REST APIs"],
+    dataAndInfra: [
+      "PostgreSQL",
+      "MySQL",
+      "Elasticsearch",
+      "Ceph Distributed Storage",
+      "Amazon DynamoDB",
+    ],
+    cloud: ["AWS", "EC2", "S3", "RDS", "GCP", "Cloud Run", "Docker"],
+    practices: [
+      "SEO architecture",
+      "JSON-LD structured data",
+      "i18n / multi-language systems",
+      "Core Web Vitals",
+      "CI / CD",
+      "Git",
+    ],
   },
 
   /**

@@ -37,11 +37,26 @@ export const en = {
     educationLabel: "Education",
     education: "B.S. Computer Science · Binus University · GPA 3.71",
     skills: {
-      frontend: { label: "Front-End", detail: "React · Next.js · TypeScript" },
-      seo: { label: "SEO & i18n", detail: "Lighthouse · Merchant · locales" },
-      fullstack: { label: "Full-Stack", detail: "Node.js · Python" },
-      systems: { label: "Systems", detail: "Scale · storage · search" },
-      cloud: { label: "Cloud", detail: "AWS" },
+      frontend: {
+        label: "Front-End",
+        detail: "React · Next.js · TypeScript · Tailwind · Zustand · React Query",
+      },
+      seo: {
+        label: "SEO & i18n",
+        detail: "JSON-LD · Merchant Center · locales · Lighthouse · GTM",
+      },
+      fullstack: {
+        label: "Full-Stack",
+        detail: "Node.js · NestJS · Python · REST APIs",
+      },
+      systems: {
+        label: "Systems",
+        detail: "PostgreSQL · Elasticsearch · Ceph · MySQL",
+      },
+      cloud: {
+        label: "Cloud",
+        detail: "AWS · GCP · Docker · Cloud Run",
+      },
     },
     credentials: [
       {

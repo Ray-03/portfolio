@@ -53,6 +53,13 @@ export type HomeContent = {
   stackLabel: string;
   classifiedLabel: string;
   aboutTitle: string;
+  skillsLabel: string;
+  skills: {
+    id: string;
+    label: string;
+    detail: string;
+    level: number;
+  }[];
   educationLabel: string;
   education: string;
   credentials: { label: string; value: string }[];

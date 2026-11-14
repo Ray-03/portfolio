@@ -38,11 +38,26 @@ export const zh: Dictionary = {
     educationLabel: "教育",
     education: "计算机科学学士 · Binus University · GPA 3.71",
     skills: {
-      frontend: { label: "前端", detail: "React · Next.js · TypeScript" },
-      seo: { label: "SEO 与 i18n", detail: "Lighthouse · Merchant · 多语言" },
-      fullstack: { label: "全栈", detail: "Node.js · Python" },
-      systems: { label: "系统", detail: "规模 · 存储 · 搜索" },
-      cloud: { label: "云", detail: "AWS" },
+      frontend: {
+        label: "前端",
+        detail: "React · Next.js · TypeScript · Tailwind · Zustand · React Query",
+      },
+      seo: {
+        label: "SEO 与 i18n",
+        detail: "JSON-LD · Merchant Center · 多语言 · Lighthouse · GTM",
+      },
+      fullstack: {
+        label: "全栈",
+        detail: "Node.js · NestJS · Python · REST APIs",
+      },
+      systems: {
+        label: "系统",
+        detail: "PostgreSQL · Elasticsearch · Ceph · MySQL",
+      },
+      cloud: {
+        label: "云",
+        detail: "AWS · GCP · Docker · Cloud Run",
+      },
     },
     credentials: [
       {
