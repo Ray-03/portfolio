@@ -24,14 +24,6 @@ export function hasLocale(locale: string): locale is Locale {
   return locales.includes(locale as Locale);
 }
 
-export function stripLocalePrefix(pathname: string) {
-  const segments = pathname.split("/").filter(Boolean);
-  if (segments[0] && hasLocale(segments[0])) {
-    segments.shift();
-  }
-  return `/${segments.join("/")}`;
-}
-
 export function replaceLocalePath(pathname: string, nextLocale: Locale) {
   const segments = pathname.split("/");
   if (segments.length > 1 && hasLocale(segments[1])) {

@@ -1,5 +1,7 @@
+import { AskTerminal } from "@/components/portfolio/ask-terminal";
 import { CodexArchives } from "@/components/portfolio/codex-archives";
 import { HeroDecree } from "@/components/portfolio/hero-decree";
+import { isChatEnabled } from "@/lib/chat";
 import type { HomeContent } from "@/lib/portfolio/types";
 
 function indexLabel(index: number) {
@@ -47,6 +49,8 @@ export function HomeView({ content }: { content: HomeContent }) {
         </ol>
       </section>
 
+      <AskTerminal enabled={isChatEnabled()} />
+
       <section aria-labelledby="work-heading" className="work-stage">
         <div className="work-sticky">
           <h2
@@ -81,7 +85,52 @@ export function HomeView({ content }: { content: HomeContent }) {
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-foreground/85">
           {content.lead}
         </p>
-        <div className="mt-8">
+
+        <div className="mt-10">
+          <p className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
+            {content.skillsLabel}
+          </p>
+          <ul className="mt-5 divide-y divide-border border-y border-border">
+            {content.skills.map((skill) => (
+              <li
+                key={skill.id}
+                className="grid gap-3 py-5 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:items-center sm:gap-8"
+              >
+                <div>
+                  <p className="text-sm font-medium tracking-[0.02em] text-foreground">
+                    {skill.label}
+                  </p>
+                  <p
+                    className="mt-1 font-mono text-[11px] tabular-nums tracking-[0.08em] text-primary"
+                    aria-label={`${skill.level} of 100`}
+                  >
+                    {skill.level}
+                  </p>
+                </div>
+                <div>
+                  <div
+                    className="h-0.5 w-full overflow-hidden bg-border"
+                    role="meter"
+                    aria-valuenow={skill.level}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={skill.label}
+                  >
+                    <div
+                      className="h-full bg-primary transition-[width] duration-700 ease-out"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {skill.detail}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-10">
           <p className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
             {content.educationLabel}
           </p>

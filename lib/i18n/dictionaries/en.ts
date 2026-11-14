@@ -7,24 +7,17 @@ export const en = {
       "Richard Rinaldy is a Full-Stack & Front-End engineer in Tangerang. React, Next.js, TypeScript, and measurable SEO across Singapore, Taiwan, and Indonesia.",
   },
   apps: {
-    portfolio: "Portfolio",
-    chatbot: "Ask AI",
-    interests: "Interests",
-    linkedin: "LinkedIn",
     github: "GitHub",
-    email: "Email",
-    contact: "Contact",
   },
   hero: {
     tagline:
       `React & Next.js engineer in Tangerang — SEO and scale for Singapore, Taiwan, and Indonesia since ${siteConfig.careerStartYear}.`,
-    scrollHint: "Scroll to enter",
   },
   shell: {
     proof: "Selected proof",
     about: "About",
-    exploreCodex: "Explore Codex",
-    classified: "Classified",
+    exploreCodex: "View projects",
+    classified: "Internal",
   },
   about: {
     role: "Full-Stack & Front-End Software Engineer",
@@ -37,11 +30,26 @@ export const en = {
     educationLabel: "Education",
     education: "B.S. Computer Science · Binus University · GPA 3.71",
     skills: {
-      frontend: { label: "Front-End", detail: "React · Next.js · TypeScript" },
-      seo: { label: "SEO & i18n", detail: "Lighthouse · Merchant · locales" },
-      fullstack: { label: "Full-Stack", detail: "Node.js · Python" },
-      systems: { label: "Systems", detail: "Scale · storage · search" },
-      cloud: { label: "Cloud", detail: "AWS" },
+      frontend: {
+        label: "Front-End",
+        detail: "React · Next.js · TypeScript · Tailwind · Zustand · React Query",
+      },
+      seo: {
+        label: "SEO & i18n",
+        detail: "JSON-LD · Merchant Center · locales · Lighthouse · GTM",
+      },
+      fullstack: {
+        label: "Full-Stack",
+        detail: "Node.js · NestJS · Python · REST APIs",
+      },
+      systems: {
+        label: "Systems",
+        detail: "PostgreSQL · Elasticsearch · Ceph · MySQL",
+      },
+      cloud: {
+        label: "Cloud",
+        detail: "AWS · GCP · Docker · Cloud Run",
+      },
     },
     credentials: [
       {
@@ -56,10 +64,19 @@ export const en = {
   },
   chatbot: {
     title: "Ask AI",
-    back: "Home",
-    lead: "Ask Richard's AI assistant about his experience, stack, or interests.",
-    placeholder: "Ask about Richard's work...",
-    send: "Send",
+    lead: "Open a terminal session with Richard's assistant — ask about his work, stack, or interests like ChatGPT.",
+    placeholder: "ask about Richard's work…",
+    send: "enter",
+    host: "visitor@richard-rinaldy",
+    path: "~/ask",
+    prompt: "visitor@richard:~$",
+    boot: [
+      "Ask AI v1.0 — portfolio assistant for Richard Rinaldy",
+      "Grounded in shipped work only. Type a question or run a suggestion.",
+    ],
+    suggestionsLabel: "# suggested commands",
+    thinking: "thinking…",
+    hint: "enter to send · esc to stop streaming",
     suggestions: [
       "What are Richard's main Front-End skills?",
       "How did Richard improve SEO at Trainge?",
@@ -67,107 +84,14 @@ export const en = {
     ],
     error:
       "Something went wrong, and the assistant might not be configured yet. Please reach out to Richard directly by email.",
-  },
-  interests: {
-    title: "Interests",
-    back: "Home",
-    lead: "A few things outside of shipping code.",
-    tabs: {
-      photography: "Photography",
-      music: "Music",
-      travel: "Travel",
-      fitness: "Fitness & Tech",
-    },
-    photography: {
-      intro:
-        "Landscape photography — manual camera settings, RAW capture, and wide, quiet framing.",
-      photos: [
-        {
-          alt: "Mountain ridge at sunrise",
-          src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Still alpine lake reflecting the peaks",
-          src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Road cutting through a quiet forest",
-          src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Layered mountain range at dusk",
-          src: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Sweeping valley under an open sky",
-          src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
-        },
-        {
-          alt: "Golden hour over a mountain lake",
-          src: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?auto=format&fit=crop&w=1200&q=80",
-        },
-      ],
-      placeholderNote: "Sample shots for now — real frames coming soon.",
-    },
-    music: {
-      intro: "Mostly instrumental and cinematic arrangements while working.",
-      tracks: [
-        { title: "Cinematic focus mix", mood: "Cinematic", href: "" },
-        { title: "Late-night instrumental set", mood: "Instrumental", href: "" },
-        { title: "Ambient build music", mood: "Ambient", href: "" },
-      ],
-      placeholderNote: "Placeholder tracks — real links coming soon.",
-    },
-    travel: {
-      intro:
-        "Trips across Europe and Asia, with a soft spot for the history behind each place.",
-      trips: [
-        {
-          place: "France",
-          region: "Europe",
-          note: "Cities, countryside, and centuries of history.",
-        },
-        {
-          place: "Switzerland",
-          region: "Europe",
-          note: "Alpine towns and quiet mountain views.",
-        },
-        {
-          place: "South Korea",
-          region: "Asia",
-          note: "Modern cities alongside old palaces.",
-        },
-        {
-          place: "Japan",
-          region: "Asia",
-          note: "Temples, seasons, and thoughtful design.",
-        },
-        {
-          place: "Italy",
-          region: "Europe",
-          note: "Ancient history layered into everyday streets.",
-        },
-      ],
-    },
-    fitness: {
-      intro:
-        "Building things off-screen too — one desktop part at a time, one set at a time.",
-      pcBuildTitle: "Custom PC Build",
-      pcBuild: [
-        { label: "Case", value: "Lian Li (exact model to be added)" },
-        {
-          label: "Cooling",
-          value: "be quiet! liquid cooling (exact model to be added)",
-        },
-        {
-          label: "Focus",
-          value: "Quiet, clean-cable builds with reliable thermals.",
-        },
-      ],
-      trainingTitle: "Training Philosophy",
-      trainingBody:
-        "Follows a Push-Pull-Legs (PPL) routine — consistency over intensity, built around steady progress.",
-    },
+    rateLimit:
+      "Too many questions from this network. Wait a minute, then ask about Richard's portfolio again.",
+    rejected:
+      "That request was blocked. Ask about Richard's work, stack, or background only.",
+    disabled:
+      "Ask AI is paused right now. Email or LinkedIn still reach Richard directly.",
+    budget:
+      "Ask AI hit today's site-wide limit. Check back tomorrow, or email Richard directly.",
   },
   portfolio: {
     title: "Portfolio",
@@ -270,10 +194,6 @@ export const en = {
     switchToLight: "Switch to light mode",
     switchToDark: "Switch to dark mode",
     language: "Language",
-    openMenu: "Open menu",
-    closeMenu: "Close menu",
-    close: "Close",
-    theme: "Theme",
     skipToContent: "Skip to content",
   },
 };

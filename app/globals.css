@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -60,10 +59,6 @@
 :root,
 .dark {
   --radius: 0.25rem;
-
-  --motion-fast: 160ms;
-  --motion-ui: 200ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   --espresso: #120f0d;
   --wine: #1a0f10;
@@ -240,71 +235,69 @@ html.light {
   transform: rotate(-1.5deg);
 }
 
+/* Ubuntu-style Ask AI terminal — charcoal shell, not site purple */
+.ask-terminal {
+  --term-bg: #0c0c0c;
+  --term-chrome: #1a1a1a;
+  --term-border: #2a2a2a;
+  --term-fg: #e6e6e6;
+  --term-muted: #8a8a8a;
+  --term-prompt: #33d17a;
+  --term-accent: #e5a50a;
+}
+
+.ask-terminal-cursor::after {
+  content: "█";
+  margin-left: 0.15em;
+  animation: term-blink 1s steps(1) infinite;
+}
+
+.ask-terminal-md p {
+  margin: 0 0 0.55em;
+}
+
+.ask-terminal-md p:last-child {
+  margin-bottom: 0;
+}
+
+.ask-terminal-md ul {
+  margin: 0.35em 0 0.55em;
+  padding-left: 1.1em;
+  list-style: disc;
+}
+
+.ask-terminal-md li {
+  margin: 0.15em 0;
+}
+
+.ask-terminal-md strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.ask-terminal-md code {
+  font-family: inherit;
+  color: var(--term-accent);
+}
+
+@keyframes term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ask-terminal-cursor::after {
+    animation: none;
+  }
+}
+
 @keyframes grain-shift {
   from {
     background-position: 0 0;
   }
   to {
     background-position: 160px -80px;
-  }
-}
-
-.layer-far,
-.layer-near,
-.layer-caption {
-  transform: translate3d(0, 0, 0);
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .layer-far {
-      animation: layer-far linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-    .layer-near {
-      animation: layer-near linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-
-    .layer-caption {
-      animation: layer-caption linear both;
-      animation-timeline: view();
-      animation-range: entry 20% cover 70%;
-    }
-  }
-}
-
-@keyframes layer-far {
-  from {
-    transform: translate3d(0, 10%, 0);
-  }
-  to {
-    transform: translate3d(0, -24%, 0);
-  }
-}
-
-@keyframes layer-near {
-  from {
-    transform: translate3d(0, 22%, 0);
-  }
-  to {
-    transform: translate3d(0, -32%, 0);
-  }
-}
-
-@keyframes layer-caption {
-  from {
-    transform: translate3d(-1.25rem, 0, 0);
-  }
-  to {
-    transform: translate3d(1.25rem, 0, 0);
   }
 }
 
