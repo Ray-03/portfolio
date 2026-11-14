@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -60,10 +59,6 @@
 :root,
 .dark {
   --radius: 0.25rem;
-
-  --motion-fast: 160ms;
-  --motion-ui: 200ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   --espresso: #120f0d;
   --wine: #1a0f10;
@@ -303,65 +298,6 @@ html.light {
   }
   to {
     background-position: 160px -80px;
-  }
-}
-
-.layer-far,
-.layer-near,
-.layer-caption {
-  transform: translate3d(0, 0, 0);
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .layer-far {
-      animation: layer-far linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-    .layer-near {
-      animation: layer-near linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-
-    .layer-caption {
-      animation: layer-caption linear both;
-      animation-timeline: view();
-      animation-range: entry 20% cover 70%;
-    }
-  }
-}
-
-@keyframes layer-far {
-  from {
-    transform: translate3d(0, 10%, 0);
-  }
-  to {
-    transform: translate3d(0, -24%, 0);
-  }
-}
-
-@keyframes layer-near {
-  from {
-    transform: translate3d(0, 22%, 0);
-  }
-  to {
-    transform: translate3d(0, -32%, 0);
-  }
-}
-
-@keyframes layer-caption {
-  from {
-    transform: translate3d(-1.25rem, 0, 0);
-  }
-  to {
-    transform: translate3d(1.25rem, 0, 0);
   }
 }
 
