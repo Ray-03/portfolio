@@ -48,7 +48,7 @@ function networkOptions(light: boolean): ISourceOptions {
       },
       move: {
         enable: true,
-        speed: 0.0875,
+        speed: 0.15,
         direction: "none",
         outModes: { default: "bounce" },
       },
