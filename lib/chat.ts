@@ -1,11 +1,18 @@
 export const CHAT_LIMITS = {
-  maxMessages: 16,
-  maxChars: 1200,
-  maxBodyBytes: 24_000,
-  maxOutputTokens: 450,
-  /** Soft cap per IP (best-effort on serverless isolates). */
+  /** Room for a real back-and-forth; still bounds cost. */
+  maxMessages: 24,
+  maxChars: 2000,
+  maxBodyBytes: 32_000,
+  maxOutputTokens: 700,
+  /**
+   * Soft caps per IP (best-effort on serverless).
+   * Tuned for humans + shared office NAT, not rapid scrapers:
+   * ~1 msg every few seconds is fine; sustained spray is not.
+   */
   rateLimitWindowMs: 60_000,
-  rateLimitMaxRequests: 8,
+  rateLimitMaxRequests: 20,
+  dailyWindowMs: 24 * 60 * 60 * 1000,
+  dailyMaxRequests: 120,
 } as const;
 
 const ALLOWED_CLIENT_ROLES = new Set(["user", "assistant"]);
@@ -32,46 +39,130 @@ export function getClientIp(req: Request): string {
 
 type RateBucket = { count: number; resetAt: number };
 
-const rateBuckets = new Map<string, RateBucket>();
+const minuteBuckets = new Map<string, RateBucket>();
+const dailyBuckets = new Map<string, RateBucket>();
 
-export function consumeRateLimit(ip: string): {
-  ok: boolean;
-  remaining: number;
-  resetAt: number;
-} {
+function consumeBucket(
+  store: Map<string, RateBucket>,
+  key: string,
+  windowMs: number,
+  max: number,
+): { ok: boolean; remaining: number; resetAt: number } {
   const now = Date.now();
-  const existing = rateBuckets.get(ip);
+  const existing = store.get(key);
 
   if (!existing || existing.resetAt <= now) {
-    const resetAt = now + CHAT_LIMITS.rateLimitWindowMs;
-    rateBuckets.set(ip, { count: 1, resetAt });
-    return {
-      ok: true,
-      remaining: CHAT_LIMITS.rateLimitMaxRequests - 1,
-      resetAt,
-    };
+    const resetAt = now + windowMs;
+    store.set(key, { count: 1, resetAt });
+    return { ok: true, remaining: max - 1, resetAt };
   }
 
-  if (existing.count >= CHAT_LIMITS.rateLimitMaxRequests) {
+  if (existing.count >= max) {
     return { ok: false, remaining: 0, resetAt: existing.resetAt };
   }
 
   existing.count += 1;
   return {
     ok: true,
-    remaining: CHAT_LIMITS.rateLimitMaxRequests - existing.count,
+    remaining: max - existing.count,
     resetAt: existing.resetAt,
   };
 }
 
-/** Cheap jailbreak / off-scope probes before spending tokens. */
+export function consumeRateLimit(ip: string): {
+  ok: boolean;
+  remaining: number;
+  resetAt: number;
+  kind: "minute" | "daily";
+} {
+  const minute = consumeBucket(
+    minuteBuckets,
+    ip,
+    CHAT_LIMITS.rateLimitWindowMs,
+    CHAT_LIMITS.rateLimitMaxRequests,
+  );
+  if (!minute.ok) {
+    return { ...minute, kind: "minute" };
+  }
+
+  const daily = consumeBucket(
+    dailyBuckets,
+    ip,
+    CHAT_LIMITS.dailyWindowMs,
+    CHAT_LIMITS.dailyMaxRequests,
+  );
+  if (!daily.ok) {
+    return { ...daily, kind: "daily" };
+  }
+
+  return { ...minute, kind: "minute" };
+}
+
+function hostFromUrl(value: string | null | undefined): string | null {
+  if (!value) return null;
+  try {
+    return new URL(value).host.toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+/** Allowed browser origins for /api/chat (blocks casual cross-site abuse). */
+export function getAllowedChatHosts(): Set<string> {
+  const hosts = new Set<string>(["localhost:3000", "127.0.0.1:3000"]);
+
+  const site = hostFromUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  if (site) hosts.add(site);
+
+  const vercel = process.env.VERCEL_URL?.replace(/^https?:\/\//, "").toLowerCase();
+  if (vercel) hosts.add(vercel);
+
+  const production = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ?.replace(/^https?:\/\//, "")
+    .toLowerCase();
+  if (production) hosts.add(production);
+
+  return hosts;
+}
+
+/**
+ * Require Origin/Referer to match this site.
+ * Same-origin fetch often omits Origin — fall back to Host + Sec-Fetch-Site.
+ */
+export function isAllowedChatOrigin(req: Request): boolean {
+  const allowed = getAllowedChatHosts();
+  const originHost = hostFromUrl(req.headers.get("origin"));
+  if (originHost && allowed.has(originHost)) return true;
+
+  const refererHost = hostFromUrl(req.headers.get("referer"));
+  if (refererHost && allowed.has(refererHost)) return true;
+
+  const fetchSite = req.headers.get("sec-fetch-site");
+  const host = req.headers.get("host")?.toLowerCase();
+  if (
+    fetchSite === "same-origin" &&
+    host &&
+    (allowed.has(host) || host.endsWith(".vercel.app"))
+  ) {
+    return true;
+  }
+
+  // Local `next dev` / curl without Origin — allow only outside production.
+  if (process.env.NODE_ENV !== "production" && !originHost && !refererHost) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Only block clear jailbreak probes — not normal curiosity.
+ * Off-topic portfolio-adjacent questions are handled by the system prompt.
+ */
 const BLOCKED_PATTERNS = [
   /ignore (all |any )?(previous|prior|above) (instructions|prompts)/i,
-  /system prompt/i,
-  /jailbreak/i,
-  /dan mode/i,
-  /developer mode/i,
-  /act as (?!richard|his assistant)/i,
+  /\bjailbreak\b/i,
+  /\bdan mode\b/i,
 ];
 
 export function looksLikePromptInjection(text: string): boolean {

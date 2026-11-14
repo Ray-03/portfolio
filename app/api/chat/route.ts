@@ -6,6 +6,7 @@ import {
   consumeRateLimit,
   extractMessageText,
   getClientIp,
+  isAllowedChatOrigin,
   isClientChatRole,
   looksLikePromptInjection,
 } from "@/lib/chat";
@@ -51,6 +52,10 @@ function lastUserText(messages: UIMessage[]): string {
 }
 
 export async function POST(req: Request) {
+  if (!isAllowedChatOrigin(req)) {
+    return invalid("Forbidden origin.", 403);
+  }
+
   const contentLength = Number(req.headers.get("content-length") ?? 0);
   if (contentLength > CHAT_LIMITS.maxBodyBytes) {
     return invalid("Request too large.", 413);
