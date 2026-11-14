@@ -72,9 +72,19 @@ export const en = {
   chatbot: {
     title: "Ask AI",
     back: "Home",
-    lead: "Ask Richard's AI assistant about his experience, stack, or interests.",
-    placeholder: "Ask about Richard's work...",
-    send: "Send",
+    lead: "Open a terminal session with Richard's assistant — ask about his work, stack, or interests like ChatGPT.",
+    placeholder: "ask about Richard's work…",
+    send: "enter",
+    host: "visitor@richard-rinaldy",
+    path: "~/ask",
+    prompt: "visitor@richard:~$",
+    boot: [
+      "Ask AI v1.0 — portfolio assistant for Richard Rinaldy",
+      "Grounded in shipped work only. Type a question or run a suggestion.",
+    ],
+    suggestionsLabel: "# suggested commands",
+    thinking: "thinking…",
+    hint: "enter to send · esc to stop streaming",
     suggestions: [
       "What are Richard's main Front-End skills?",
       "How did Richard improve SEO at Trainge?",
@@ -82,6 +92,10 @@ export const en = {
     ],
     error:
       "Something went wrong, and the assistant might not be configured yet. Please reach out to Richard directly by email.",
+    rateLimit:
+      "Too many questions from this network. Wait a minute, then ask about Richard's portfolio again.",
+    rejected:
+      "That request was blocked. Ask about Richard's work, stack, or background only.",
   },
   interests: {
     title: "Interests",

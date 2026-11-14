@@ -73,9 +73,19 @@ export const id: Dictionary = {
   chatbot: {
     title: "Tanya AI",
     back: "Beranda",
-    lead: "Tanyakan ke asisten AI Richard soal pengalaman, stack, atau hobinya.",
-    placeholder: "Tanya soal pekerjaan Richard...",
-    send: "Kirim",
+    lead: "Buka sesi terminal dengan asisten Richard — tanya soal kerja, stack, atau hobinya seperti ChatGPT.",
+    placeholder: "tanya soal kerja Richard…",
+    send: "enter",
+    host: "visitor@richard-rinaldy",
+    path: "~/ask",
+    prompt: "visitor@richard:~$",
+    boot: [
+      "Ask AI v1.0 — asisten portofolio Richard Rinaldy",
+      "Jawaban berbasis data karya yang sudah di-ship. Ketik pertanyaan atau jalankan saran.",
+    ],
+    suggestionsLabel: "# perintah yang disarankan",
+    thinking: "berpikir…",
+    hint: "enter untuk kirim · esc untuk stop streaming",
     suggestions: [
       "Apa keahlian utama Richard di Front-End?",
       "Bagaimana Richard meningkatkan SEO di Trainge?",
@@ -83,6 +93,10 @@ export const id: Dictionary = {
     ],
     error:
       "Ada yang tidak beres, mungkin asisten ini belum dikonfigurasi. Silakan hubungi Richard langsung lewat email.",
+    rateLimit:
+      "Terlalu banyak pertanyaan dari jaringan ini. Tunggu sebentar, lalu tanya lagi soal portofolio Richard.",
+    rejected:
+      "Permintaan ditolak. Tanya hanya soal kerja, stack, atau latar belakang Richard.",
   },
   interests: {
     title: "Minat",

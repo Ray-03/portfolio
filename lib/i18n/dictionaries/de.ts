@@ -73,9 +73,19 @@ export const de: Dictionary = {
   chatbot: {
     title: "KI fragen",
     back: "Home",
-    lead: "Frag Richards KI-Assistenten nach seiner Erfahrung, seinem Stack oder seinen Interessen.",
-    placeholder: "Frag nach Richards Arbeit...",
-    send: "Senden",
+    lead: "Öffne eine Terminal-Sitzung mit Richards Assistenten — frag nach Arbeit, Stack oder Interessen wie bei ChatGPT.",
+    placeholder: "frag nach Richards Arbeit…",
+    send: "enter",
+    host: "visitor@richard-rinaldy",
+    path: "~/ask",
+    prompt: "visitor@richard:~$",
+    boot: [
+      "Ask AI v1.0 — Portfolio-Assistent für Richard Rinaldy",
+      "Antworten basieren nur auf gelieferter Arbeit. Tippe eine Frage oder starte einen Vorschlag.",
+    ],
+    suggestionsLabel: "# vorgeschlagene Befehle",
+    thinking: "denkt…",
+    hint: "enter zum Senden · esc zum Stoppen des Streams",
     suggestions: [
       "Was sind Richards wichtigste Front-End-Fähigkeiten?",
       "Wie hat Richard die SEO bei Trainge verbessert?",
@@ -83,6 +93,10 @@ export const de: Dictionary = {
     ],
     error:
       "Etwas ist schiefgelaufen — der Assistent ist eventuell noch nicht konfiguriert. Bitte kontaktiere Richard direkt per E-Mail.",
+    rateLimit:
+      "Zu viele Anfragen aus diesem Netzwerk. Warte eine Minute und frag erneut zu Richards Portfolio.",
+    rejected:
+      "Anfrage blockiert. Frag nur nach Richards Arbeit, Stack oder Hintergrund.",
   },
   interests: {
     title: "Interessen",

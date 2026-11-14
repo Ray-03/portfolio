@@ -1,3 +1,4 @@
+import { AskTerminal } from "@/components/portfolio/ask-terminal";
 import { CodexArchives } from "@/components/portfolio/codex-archives";
 import { HeroDecree } from "@/components/portfolio/hero-decree";
 import type { HomeContent } from "@/lib/portfolio/types";
@@ -47,6 +48,7 @@ export function HomeView({ content }: { content: HomeContent }) {
         </ol>
       </section>
 
+      <AskTerminal />
 
       <section aria-labelledby="work-heading" className="work-stage">
         <div className="work-sticky">
