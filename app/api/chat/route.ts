@@ -1,7 +1,14 @@
 import { google } from "@ai-sdk/google";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { buildChatSystemPrompt } from "@/data/chatbot-prompt";
-import { CHAT_LIMITS, isChatRole } from "@/lib/chat";
+import {
+  CHAT_LIMITS,
+  consumeRateLimit,
+  extractMessageText,
+  getClientIp,
+  isClientChatRole,
+  looksLikePromptInjection,
+} from "@/lib/chat";
 
 export const maxDuration = 30;
 
@@ -23,25 +30,43 @@ function parseMessages(payload: unknown): UIMessage[] | null {
   for (const message of messages) {
     if (!message || typeof message !== "object") return null;
     const item = message as { role?: unknown; parts?: unknown };
-    if (!isChatRole(item.role)) return null;
+    // Never accept client-supplied system messages (prompt injection vector).
+    if (!isClientChatRole(item.role)) return null;
     if (!Array.isArray(item.parts)) return null;
 
-    const textLength = item.parts.reduce((sum, part) => {
-      if (!part || typeof part !== "object") return sum;
-      const text = (part as { text?: unknown }).text;
-      return typeof text === "string" ? sum + text.length : sum;
-    }, 0);
-
-    if (textLength > CHAT_LIMITS.maxChars) return null;
+    const text = extractMessageText(item.parts);
+    if (text.length > CHAT_LIMITS.maxChars) return null;
   }
 
   return messages as UIMessage[];
+}
+
+function lastUserText(messages: UIMessage[]): string {
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    const message = messages[i];
+    if (message.role !== "user") continue;
+    return extractMessageText(message.parts);
+  }
+  return "";
 }
 
 export async function POST(req: Request) {
   const contentLength = Number(req.headers.get("content-length") ?? 0);
   if (contentLength > CHAT_LIMITS.maxBodyBytes) {
     return invalid("Request too large.", 413);
+  }
+
+  const ip = getClientIp(req);
+  const rate = consumeRateLimit(ip);
+  if (!rate.ok) {
+    return new Response("Too many requests. Try again shortly.", {
+      status: 429,
+      headers: {
+        "Retry-After": String(
+          Math.max(1, Math.ceil((rate.resetAt - Date.now()) / 1000)),
+        ),
+      },
+    });
   }
 
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -60,11 +85,21 @@ export async function POST(req: Request) {
     return invalid("Invalid chat payload.");
   }
 
+  const latest = lastUserText(messages);
+  if (!latest.trim()) {
+    return invalid("Empty user message.");
+  }
+  if (looksLikePromptInjection(latest)) {
+    return invalid("Message rejected.", 400);
+  }
+
   try {
     const result = streamText({
       model: google("gemini-2.5-flash"),
       system: systemPrompt,
       messages: await convertToModelMessages(messages),
+      maxOutputTokens: CHAT_LIMITS.maxOutputTokens,
+      temperature: 0.3,
       abortSignal: req.signal,
     });
 
